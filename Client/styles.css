@@ -1,0 +1,210 @@
+html {
+    background: url(1.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+}
+
+
+.title{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 70px;
+	color: white;
+	margin-left:90px;
+}
+
+.divTitle{
+	margin-bottom:50px;
+}
+
+.presentation{
+	font-size: 18px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: white;
+	margin-top:50px;
+}
+
+.buttonStart {
+	border-radius: 12px;
+	background-color: transparent;
+    background-repeat:no-repeat;
+    border-color: white;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+	margin-top:60px;
+	margin-left:320px;
+}
+
+.intro{
+	width: 500px;
+	height: 570px;
+	border-style: solid;
+    border-width: 2px;
+	border-radius: 12px;
+	border-color:white;
+	margin-top:170px;
+	margin-left:120px;
+	padding:20px;
+}
+
+.divLogin{
+	margin: auto;
+	margin-top:190px;
+    width: 1150px;
+	height:600px;
+	display:none;
+	background-color:white;
+}
+
+.divImage{
+	width:53.9%;
+	height:100%;
+	display: inline-block;
+	background-image: url("5.jpg");
+	float: right;
+	position: relative;
+}
+
+.login{
+	width:45.9%;
+	height:100%;
+	display: inline-block;
+	background-color: white;
+	float: left;
+}
+
+
+.titleLogin{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 70px;
+	color: rgb(134,111,97);
+	margin-left:190px;
+}
+
+.divTitleLogin{
+	margin-bottom:50px;
+}
+
+.fieldLogin{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 25px;
+	margin-left:110px;
+	color: rgb(134,111,97);
+	margin-top: 15px;
+	margin-bottom:15px;
+}
+
+.fieldMessageLogin{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 25px;
+	margin-left:90px;
+	color: rgb(134,111,97);
+	margin-top: 15px;
+	margin-bottom:15px;
+}
+
+.buttonLogin {
+	border-radius: 12px;
+	background-color: rgb(134,111,97);
+    background-repeat:no-repeat;
+    border-color: rgb(134,111,97);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+	margin-top:60px;
+	margin-left:170px;
+	margin-bottom:70px;
+	width:200px;
+}
+
+.divMenuSignUp{
+	display: none;
+}
+
+
+.titleSignUp{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 70px;
+	color: rgb(134,111,97);
+	margin-left:150px;
+}
+
+.divTitleSignUp{
+	margin-bottom:50px;
+}
+
+
+.fieldSignUp{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 25px;
+	margin-left:110px;
+	color: rgb(134,111,97);
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+
+.buttonSignUp {
+	border-radius: 12px;
+	background-color: rgb(134,111,97);
+    background-repeat:no-repeat;
+    border-color: rgb(134,111,97);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+	margin-top:40px;
+	margin-left:170px;
+	margin-bottom:40px;
+	width:200px;
+}
+
+.message{
+	cursor:pointer;
+}
+
+.divLobby{
+	margin: auto;
+	margin-top:190px;
+    width: 1150px;
+	height:600px;
+	display:none;
+	background-color:white;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  display:none;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

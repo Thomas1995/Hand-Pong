@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" href="styles.css">
+	<script src="home.js"></script>
+</head>
+<body>
+
+	<div id="divLogin" class="divLogin">
+		<div class="divImage">
+		</div>
+		<div class="login">
+			<div class="divMenuLogin">
+				<div class="divTitleLogin">
+					<label class="titleLogin">Login</label>
+				</div>
+				<div>
+					<label class="fieldLogin">Email</label>
+				</div>
+				<div>
+					<input id="emailLogin" class="fieldLogin" type="text">
+				</div>
+				<div>
+					<label class="fieldLogin">Password</label>
+				</div>
+				<div>
+					<input id="passwordLogin" class="fieldLogin" type="password">
+				</div>
+				<div>
+					<input id="loginBtn" class="buttonLogin" type="button" value="Login">
+				</div>
+				<div>
+					<label class="fieldMessageLogin">Don't have an account? 
+						<span id="SignUpOption" class="message">Sign Up</span>
+					</label>
+				</div>
+			</div>
+			<div class="divMenuSignUp">
+				<div class="divTitleSignUp">
+					<label class="titleSignUp">Sign Up</label>
+				</div>
+				<div>
+					<label class="fieldSignUp">Name</label>
+				</div>
+				<div>
+					<input id="nameSignUp" class="fieldSignUp" type="text">
+				</div>
+				<div>
+					<label class="fieldSignUp">Email</label>
+				</div>
+				<div>
+					<input id="emailSignUp" class="fieldSignUp" type="text">
+				</div>
+				<div>
+					<label class="fieldSignUp">Password</label>
+				</div>
+				<div>
+					<input id="passwordSignUp" class="fieldSignUp" type="password">
+				</div>
+				<div>
+					<input id="signUpBtn" class="buttonSignUp" type="button" value="Sign Up">
+				</div>
+				<div>
+					<label class="fieldMessageLogin">Already have an account?
+						<span id="LoginOption" class="message">Log In</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<div id="intro" class="intro">
+		<div class="divTitle">
+			<label class="title">Pong Game</label>
+		</div>
+		<div>
+			<label class="presentation">&emsp;&emsp;Pong is one of the first computer games that ever created, this simple "tennis like" game features two paddles and a ball, 
+				the goal is to defeat your opponent by being the first one to gain 10 point, a player gets a point once the opponent misses a ball. <br/>
+				&emsp;&emsp;The game was originally developed by Allan Alcorn and released in 1972 by Atari corporations. Soon, Pong became a huge success, and became the first commercially successful game.
+				Today, the Pong Game is considered to be the game which started the video games industry, as it proved that the video games market can produce significant revenues.			
+				</label>
+		</div>
+		<div>
+			<input type="button" id="startButton" class="buttonStart" value="Let's get started"></input>
+		</div>
+	</div>
+	
+	<div id="divLobby" class="divLobby">
+		<input type="button" id="enterGameBtn" class="buttonEnterGame" value="Start"></input>
+		<div class="loader"></div>
+	</div>
+
+
+</body>
+</html>
