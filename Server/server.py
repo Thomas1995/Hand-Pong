@@ -54,6 +54,22 @@ def registerUser(username, email, password):
 
     return userID
 
+def getUserData(userID):
+    cursor = dbConn.cursor()
+
+    sql_command = 'SELECT username, email, win, loss FROM users WHERE userID = ' + str(userID)
+    cursor.execute(sql_command)
+    result = cursor.fetchall()
+
+    ret = {}
+    if(len(result) > 0 and len(result[0]) > 3):
+        ret['username'] = result[0][0]
+        ret['email'] = result[0][1]
+        ret['win'] = result[0][2]
+        ret['loss'] = result[0][3]
+    return ret
+
+
 async def listen(websocket, path):
     userID = 0
     resp = {}
@@ -71,17 +87,18 @@ async def listen(websocket, path):
                 if userID != 0:
                     print('User-ul ' + str(userID) + ' (' + msg['username'] + ') a fost creat')
                     activeConnections[userID] = websocket
+                    resp = getUserData(userID)
                     resp['status'] = 'OK'
                 else:
                     resp['status'] = 'INVALID_CREDENTIALS'
                 await websocket.send(json.dumps(resp))
-
 
             if(msg['actionType'] == 1):
                 userID = getUserID(msg['username'], msg['password'])
                 if userID != 0:
                     print('User-ul ' + str(userID) + ' (' + msg['username'] + ') s-a conectat')
                     activeConnections[userID] = websocket
+                    resp = getUserData(userID)
                     resp['status'] = 'OK'
                 else:
                     resp['status'] = 'INVALID_CREDENTIALS'
