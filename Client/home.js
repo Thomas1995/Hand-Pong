@@ -60,7 +60,6 @@ $(document).ready(function() {
 	  };
 	  conn.onopen = () => conn.send(JSON.stringify(msg));			
 	  
-	  
   });
   
   $("#signUpBtn").click(function() {
@@ -82,6 +81,9 @@ $(document).ready(function() {
 	  if(obj.status == 'OK'){
 		  var divLogin = $("#divLogin");
 		  removeElement(divLogin);
+		  $("#usernameLobby").text(obj.username);
+		  $("#emailLobby").text(obj.email);
+		  $("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
 		  setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
 	  }
 	  else{
@@ -142,6 +144,79 @@ $(document).ready(function() {
   $("#prev").click(function () {
 	  updateItems(-1);
   });
+  
+  
+    navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
+
+    navigator.getMedia(
+        // constraints
+        {video:true, audio:false},
+
+        // success callback
+        function (mediaStream) {
+            var video = document.getElementsByTagName('video')[0];
+            video.srcObject = mediaStream;
+            video.play();
+        },   
+        //handle error
+        function (error) {
+            console.log(error);
+        }) 
+
+	$("#capture").click(function () {
+		
+	  var canvas = document.createElement("canvas");
+	  var video = document.getElementById("video");
+        canvas.width = 300;
+        canvas.height = 300;
+        canvas.getContext('2d')
+              .drawImage(video, 0, 0, canvas.width, canvas.height);
+ 
+        var img = document.createElement("img");
+        img.src = canvas.toDataURL();
+        $("#output").append(img);
+		
+		var data = canvas.getContext("2d").getImageData(0, 0, 300, 300).data; 
+		var stringPicture = '';
+		
+		for(var i=0; i<data.length; i+=4) {
+			for(var t = 0; t < 3; t++){
+				if(data[i+t].toString().length < 3){
+					for(var j = data[i+t].toString().length; j < 3; j++){
+						stringPicture = stringPicture.concat("0");
+					}
+				}
+				stringPicture = stringPicture.concat(data[i+t].toString());
+			}
+		}
+		/*
+		var t = 0;
+		var myArr = [];
+		for (var i = 0; i < 277; i++){
+			myArr[i] = [];
+			for (var j = 0; j < 220; j++){
+				myArr[i][j] = [];
+				for(var k = 0; k < 3; k++){
+					myArr[i][j][k] = data.data[t];
+					t = t + 1;
+				}
+				t++;
+			}
+		}
+		*/
+	 //Aici Thomas	
+	  var msg = {};
+	  
+	  msg["actionType"] = 3;
+	  msg["picture"] = stringPicture;
+	  		  
+	   
+	  conn.onmessage = function(e){ 
+	  console.log(e.data);
+	  	 	
+	  };
+	  conn.send(JSON.stringify(msg));
+	});
     
 });
 
@@ -160,11 +235,10 @@ function showPleaseWait() {
         </div>\
     </div>';
     $(document.body).append(modalLoading);
-    $("#pleaseWaitDialog").modal("show");
 }
 
 function hidePleaseWait() {
-    $("#pleaseWaitDialog").modal("hide");
+    $("#pleaseWaitDialog").remove();
 }
 
 function removeElement(target) {
