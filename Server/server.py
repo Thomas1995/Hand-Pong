@@ -1,9 +1,10 @@
+import sys
 import asyncio
 import websockets
 import json
 import sqlite3
 
-ADDRESS = '192.168.0.207'
+ADDRESS = 'localhost'
 PORT = 9950
 
 activeConnections = {}
@@ -11,11 +12,17 @@ readyToPlay = []
 matches = []
 dbConn = None
 
+STATUS_OK = 'OK'
+STATUS_ALREADY_LOGGED_IN = 'ALREADY_LOGGED_IN'
+STATUS_INVALID_CREDENTIALS = 'INVALID_CREDENTIALS'
+STATUS_NO_USER_ID = 'NO_USER_ID'
+STATUS_ENEMY_DISCONNECTED = 'ENEMY_DISCONNECTED'
+
 def getUserID(username, password):
     cursor = dbConn.cursor()
 
-    sql_command = 'SELECT userID FROM users WHERE username = \"' + username + '\" AND password = \"' + password + '\"'
-    cursor.execute(sql_command)
+    sql_command = 'SELECT userID FROM users WHERE username = ? AND password = ?'
+    cursor.execute(sql_command, (username, password))
     result = cursor.fetchall()
 
     if(result == []):
@@ -43,8 +50,9 @@ def registerUser(username, email, password):
     else:
         userID = 1
 
-    sql_command = 'INSERT INTO users VALUES (' + str(userID) + ', \"' + username + '\", \"' + email + '\", \"' + password + '\", 0, 0)'
-    cursor.execute(sql_command)
+    sql_command = 'INSERT INTO users VALUES (?, ?, ?, ?, 0, 0)'
+    sql_args = (str(userID), username, email, password)
+    cursor.execute(sql_command, sql_args)
 
     try:
         sql_command = 'COMMIT'
@@ -57,8 +65,8 @@ def registerUser(username, email, password):
 def getUserData(userID):
     cursor = dbConn.cursor()
 
-    sql_command = 'SELECT username, email, win, loss FROM users WHERE userID = ' + str(userID)
-    cursor.execute(sql_command)
+    sql_command = 'SELECT username, email, win, loss FROM users WHERE userID = ?'
+    cursor.execute(sql_command, (str(userID),))
     result = cursor.fetchall()
 
     ret = {}
@@ -72,15 +80,13 @@ def getUserData(userID):
 
 async def listen(websocket, path):
     userID = 0
-    resp = {}
 
     while 1:
         ret = ""
         try:
             ret = await websocket.recv()
             msg = json.loads(ret)
-
-            print(msg)
+            resp = {}
 
             if(msg['actionType'] == 0):
                 userID = registerUser(msg['username'], msg['email'], msg['password'])
@@ -88,25 +94,29 @@ async def listen(websocket, path):
                     print('User-ul ' + str(userID) + ' (' + msg['username'] + ') a fost creat')
                     activeConnections[userID] = websocket
                     resp = getUserData(userID)
-                    resp['status'] = 'OK'
+                    resp['status'] = STATUS_OK
                 else:
-                    resp['status'] = 'INVALID_CREDENTIALS'
+                    resp['status'] = STATUS_INVALID_CREDENTIALS
                 await websocket.send(json.dumps(resp))
 
             if(msg['actionType'] == 1):
                 userID = getUserID(msg['username'], msg['password'])
                 if userID != 0:
-                    print('User-ul ' + str(userID) + ' (' + msg['username'] + ') s-a conectat')
-                    activeConnections[userID] = websocket
-                    resp = getUserData(userID)
-                    resp['status'] = 'OK'
+                    if userID in activeConnections:
+                        resp['status'] = STATUS_ALREADY_LOGGED_IN
+                        userID = 0
+                    else:
+                        print('User-ul ' + str(userID) + ' (' + msg['username'] + ') s-a conectat')
+                        activeConnections[userID] = websocket
+                        resp = getUserData(userID)
+                        resp['status'] = STATUS_OK
                 else:
-                    resp['status'] = 'INVALID_CREDENTIALS'
+                    resp['status'] = STATUS_INVALID_CREDENTIALS
                 await websocket.send(json.dumps(resp))
 
             if(msg['actionType'] == 2):
                 if userID == 0:
-                    resp['status'] = 'NO_USER_ID'
+                    resp['status'] = STATUS_NO_USER_ID
                     await websocket.send(json.dumps(resp))
                 else:
                     if len(readyToPlay) == 0:
@@ -117,7 +127,7 @@ async def listen(websocket, path):
                         enemyID = readyToPlay.pop()
                         print("User-ul " + str(userID) + " va juca impotriva lui " + str(enemyID))
                         matches.append((userID, enemyID))
-                        resp['status'] = 'OK'
+                        resp['status'] = STATUS_OK
                         await websocket.send(json.dumps(resp))
                         await activeConnections[enemyID].send(json.dumps(resp))
         except:
@@ -125,27 +135,43 @@ async def listen(websocket, path):
                 del activeConnections[userID]
             if userID in readyToPlay:
                 readyToPlay.remove(userID)
-            # sterge userul din matches
-            # reintoarce adversarul sau in readyToPlay
-            print('User-ul ' + str(userID) + ' s-a deconectat')
+            for m in matches:
+                if m[0] == userID or m[1] == userID:
+                    enemyID = ""
+                    if m[0] == userID:
+                        enemyID = m[1]
+                    else:
+                        enemyID = m[0]
+                    resp = {'status': STATUS_ENEMY_DISCONNECTED}
+                    try:
+                        await activeConnections[enemyID].send(json.dumps(resp))
+                    except:
+                        pass
+
+            if userID != 0:
+                print('User-ul ' + str(userID) + ' s-a deconectat')
             break
 
 
-start_server = websockets.serve(listen, ADDRESS, PORT)
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        ADDRESS = sys.argv[1]
 
-dbConn = sqlite3.connect("pong.db")
-cursor = dbConn.cursor()
-sql_command = """
-CREATE TABLE IF NOT EXISTS users (
-userID INTEGER PRIMARY KEY,
-username VARCHAR(30),
-email VARCHAR(30),
-password VARCHAR(30),
-win INTEGER,
-loss INTEGER);"""
-cursor.execute(sql_command)
+    start_server = websockets.serve(listen, ADDRESS, PORT)
 
-print('Server started...')
+    dbConn = sqlite3.connect("pong.db")
+    cursor = dbConn.cursor()
+    sql_command = """
+    CREATE TABLE IF NOT EXISTS users (
+    userID INTEGER PRIMARY KEY,
+    username VARCHAR(30),
+    email VARCHAR(30),
+    password VARCHAR(30),
+    win INTEGER,
+    loss INTEGER);"""
+    cursor.execute(sql_command)
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+    print('Server started...')
+
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()

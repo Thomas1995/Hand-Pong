@@ -182,19 +182,169 @@ html {
 .divLobby{
 	margin: auto;
 	margin-top:190px;
-    width: 1150px;
+    width: 1000px;
 	height:600px;
 	display:none;
-	background-color:white;
+	background-color:rgb(134,111,97);
+	border-radius: 12px;
+	border: 2px solid white;
+}
+
+.divRight{
+	width:49.8%;
+	height: 100%;
+	float:right;
+}
+
+.divLeft{
+	width:49.8%;
+	height: 100%;
+	float:left;
+}
+
+
+.messageIntro {
+	border-style: solid;
+	width: 400px;
+	height:383px;
+	margin:50px;
+	border-radius: 12px;
+	border: 2px solid white;
+	padding:20px;
+}
+
+.buttonOptions{
+	width: 400px;
+	height:50px;
+	margin:50px;
+}
+
+.instructions{
+	border-style: solid;
+	width: 400px;
+	height:270px;
+	margin:50px;
+	border-radius: 12px;
+	border: 2px solid white;
+}
+
+.profile{
+	border-style: solid;
+	width: 400px;
+	height:100px;
+	margin:50px;
+	border-radius: 12px;
+	border: 2px solid white;
+}
+
+.titleLobby{
+	font-size: 30px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: white;
+	font-weight: bold;
+}
+
+.messageLobby{
+	font-size: 20px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: white;
+}
+
+.divNext{
+	float: left; 
+	width: 35px;
+	height:30px;
+	margin-top:130px;
+}
+
+.divPrevious{
+	float: left; 
+	width: 35px;
+	height:30px;
+	margin-top:130px;
+}
+
+.divInstructionsText{
+	float: left; 
+	width: 330px;
+	font-size: 18px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: white;
+}
+
+.optionInstructions{
+	margin:5px;
+}
+
+#group div{
+    display: none;
+}
+#group div.current{
+    display: block;
+}
+
+.buttonEnterGame{
+	border-radius: 12px;
+	background-color: transparent;
+    background-repeat:no-repeat;
+    border-color: white;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+	width:150px;
+	margin-left:30px;
+}
+
+.buttonQuitGame{
+	border-radius: 12px;
+	background-color: white;
+    background-repeat:no-repeat;
+    border-color: white;
+    color: rgb(134,111,97);
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+	width:150px;
+	margin-left:20px;
+}
+
+.profileLeft{
+	width:25%;
+	height:100%;
+	float:left;
+}
+.profileRight{
+	width:74%;
+	height:100%;
+	float:right;
+}
+
+.profileImage{
+	margin:15px;
+}
+
+.profileText{
+	color:white;
+}
+
+.divProfileText{
+	margin:10px;
 }
 
 .loader {
-  border: 16px solid #f3f3f3;
+  border: 10px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  display:none;
+  border-top: 10px solid rgb(134,111,97);
+  width: 60px;
+  height: 60px;
+  margin:auto;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
@@ -207,4 +357,32 @@ html {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.divGame{
+	margin: auto;
+	margin-top:190px;
+    width: 1150px;
+	height:600px;
+	display:none;
+	background-color:white;
+}
+
+.modal-dialog { 
+	position: absolute; 
+	left: 0; 
+	right: 0; 
+	top: 0; 
+	bottom: 0; 
+	margin: auto; 
+	width: 350px; 
+	height: 230px; 
+	background-color:white;
+	border-radius: 12px;
+	border: 2px solid white;
+	padding:30px;
+}
+
+.modal-title{
+	color: rgb(134,111,97);
 }

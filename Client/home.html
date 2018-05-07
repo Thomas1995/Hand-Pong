@@ -16,7 +16,7 @@
 					<label class="titleLogin">Login</label>
 				</div>
 				<div>
-					<label class="fieldLogin">Email</label>
+					<label class="fieldLogin">Username</label>
 				</div>
 				<div>
 					<input id="emailLogin" class="fieldLogin" type="text">
@@ -41,7 +41,7 @@
 					<label class="titleSignUp">Sign Up</label>
 				</div>
 				<div>
-					<label class="fieldSignUp">Name</label>
+					<label class="fieldSignUp">Username</label>
 				</div>
 				<div>
 					<input id="nameSignUp" class="fieldSignUp" type="text">
@@ -88,8 +88,69 @@
 	</div>
 	
 	<div id="divLobby" class="divLobby">
-		<input type="button" id="enterGameBtn" class="buttonEnterGame" value="Start"></input>
-		<div class="loader"></div>
+		<div class="divLeft">
+			<div class="messageIntro">
+				<div class="titleLobby">
+					Lobby Game
+				</div>
+				<div class="messageLobby">
+					<br><br>You have joined the lobby. 
+					<br>Click the start button and begin your journey.
+				</div>
+			</div>
+			<div class="buttonOptions">
+				<input type="button" id="enterGameBtn" class="buttonEnterGame" value="Start Game"></input>
+				<input type="button" id="closeGameBtn" class="buttonQuitGame" value="Quit"></input>
+			</div>
+		</div>
+		<div class="divRight">
+		
+			<div class="instructions">
+				<div class="divPrevious">
+					<img style="display:none" id="prev" class="optionInstructions" src="previous.png" width="20" height="20"/>
+				</div>
+				<div class="divInstructionsText" id="group">
+					<div class="current">
+						Instuctions
+						<br><br>
+						Pong is one of the earliest arcade video games, and is a tennis sports game featuring simple two-dimensional graphics. 
+						The player controls an in-game paddle by moving his hand vertically across the one side of the screen, and can compete against another player controlling a second
+					</div>
+					<div>
+						Instuctions
+						<br><br>
+						paddle on the opposing side. Players use the paddles to hit a ball back and forth. The aim is for a player to earn more points than the opponent.
+						Points are earned when one fails to return the ball to the other. The game ends when a player reaches 11 points.
+					</div>
+				</div>
+				<div class="divNext">
+					<img id="next" class="optionInstructions" src="next.png" width="20" height="20"/>
+				</div>
+				
+				
+			</div>
+			<div class="profile">
+				<div class="profileLeft">
+					<img class="profileImage" src="profile.png" width="70" height="70"/>
+				</div>
+				<div class="profileRight">
+					<div class="divProfileText">
+						<label id="usernameLobby" class="profileText"/>
+					</div>
+					<div class="divProfileText">
+						<label id="emailLobby" class="profileText"/>
+					</div>
+					<div class="divProfileText">
+						<label id="statisticsLobby" class="profileText"/>
+					</div>
+				</div>
+			</div>
+		</div>		
+	
+	</div>
+	
+	<div id="divGame" class="divGame">
+		
 	</div>
 
 
