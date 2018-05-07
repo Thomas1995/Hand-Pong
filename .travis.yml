@@ -1,0 +1,16 @@
+sudo: required
+
+language: python
+
+python:
+  - 3.5
+
+install:
+  - pip install asyncio
+  - pip install websockets
+
+sudo: false
+
+script:
+- cd Server/
+- ./test_server.sh
