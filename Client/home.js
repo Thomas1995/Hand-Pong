@@ -1,5 +1,5 @@
 var conn = null;
-var urlConnection = 'ws://192.168.43.230:9950';
+var urlConnection = 'ws://192.168.0.207:9950';
 
 $(document).ready(function() {
   
@@ -43,12 +43,13 @@ $(document).ready(function() {
 	  
 	  conn = new WebSocket(urlConnection);
 	  conn.onmessage = function(e){ 
-	  alert("Login");
-	  console.log(e.data);
 	  var obj = JSON.parse(e.data);
 	  if(obj.status == 'OK'){
 		  var divLogin = $("#divLogin");
 		  removeElement(divLogin);
+		  $("#usernameLobby").text(obj.username);
+		  $("#emailLobby").text(obj.email);
+		  $("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
 		  setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
 	  }
 	  else{
@@ -59,9 +60,6 @@ $(document).ready(function() {
 	  };
 	  conn.onopen = () => conn.send(JSON.stringify(msg));			
 	  
-	  
-	  
-
 	  
   });
   
@@ -80,7 +78,6 @@ $(document).ready(function() {
 	 
 	  conn = new WebSocket(urlConnection);
 	  conn.onmessage = function(e){ 
-	  console.log(e.data);
 	  var obj = JSON.parse(e.data);
 	  if(obj.status == 'OK'){
 		  var divLogin = $("#divLogin");
@@ -104,15 +101,20 @@ $(document).ready(function() {
 	  var msg = {};
 	  
 	  msg["actionType"] = 2;
-		
-	 
+	  showPleaseWait();
+	  $("#enterGameBtn").prop("disabled",true);
+	  $("#closeGameBtn").prop("disabled",true);		  
+	   
 	  conn.onmessage = function(e){ 
-	  console.log(e.data);
 	  var obj = JSON.parse(e.data);
-	  alert(obj.status);
 	  switch (obj.status) {
 			case "OK":
-				alert("Connect successful");
+				  hidePleaseWait();
+				  var divLobby = $("#divLobby");
+				  removeElement(divLobby);
+				  setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
+				  $("#enterGameBtn").prop("disabled",false);
+				  $("#closeGameBtn").prop("disabled",false);	
 				break;
 			case "NO_USER_ID":
 				alert("No user id");
@@ -121,14 +123,49 @@ $(document).ready(function() {
 		}
 	 	
 	  };
-	  conn.send(JSON.stringify(msg));			
-
+	  conn.send(JSON.stringify(msg));	
 	  
-	
-	  
+  });
+  
+  $("#closeGameBtn").click(function() {
+	  	
+	  conn.close();
+	  removeElement(divLobby);
+	  setTimeout(function(){ $('.divLogin').slideToggle("slow"); }, 1000);
+	  	  
+  });
+  
+  $("#next").click(function () {
+	  updateItems(1);
+  });
+  
+  $("#prev").click(function () {
+	  updateItems(-1);
   });
     
 });
+
+function showPleaseWait() {
+    var modalLoading = '<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false role="dialog">\
+        <div class="modal-dialog">\
+            <div class="modal-content">\
+                <div class="modal-header">\
+                    <h1 class="modal-title">Loading...</h1>\
+                </div>\
+                <div class="modal-body">\
+					<div><h4 class="modal-title">Please wait for another player to connect.</h4></div>\
+					<div id="loader" class="loader"></div>\
+                </div>\
+            </div>\
+        </div>\
+    </div>';
+    $(document.body).append(modalLoading);
+    $("#pleaseWaitDialog").modal("show");
+}
+
+function hidePleaseWait() {
+    $("#pleaseWaitDialog").modal("hide");
+}
 
 function removeElement(target) {
   target.animate({
@@ -145,3 +182,21 @@ function dissapearElement(target) {
     target.css({'display' : 'none'});
   });
 }
+
+function updateItems(delta)
+{
+    var $items = $('#group').children();
+    var $current = $items.filter('.current');
+    var index = $current.index();
+    var newIndex = index+delta;
+    // Range check the new index
+    newIndex = (newIndex < 0) ? 0 : ((newIndex > $items.length) ? $items.length : newIndex); 
+    if (newIndex != index){
+        $current.removeClass('current');
+        $current = $items.eq(newIndex).addClass('current');
+        // Hide/show the next/prev
+        $("#prev").toggle(!$current.is($items.first()));    
+        $("#next").toggle(!$current.is($items.last()));    
+    }
+}
+
