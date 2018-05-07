@@ -8,7 +8,7 @@ from threading import Thread
 from datetime import datetime
 from collections import defaultdict
 
-from utils import label_map_util
+from ML.utils import label_map_util
 
 detection_graph = tf.Graph()
 sys.path.append("..")
@@ -16,7 +16,7 @@ sys.path.append("..")
 # score threshold for showing bounding boxes.
 _score_thresh = 0.27
 
-MODEL_NAME = 'hand_inference_graph'
+MODEL_NAME = 'ML/hand_inference_graph'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # List of the strings that is used to add correct label for each box.

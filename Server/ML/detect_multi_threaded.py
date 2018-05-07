@@ -6,8 +6,8 @@ import time
 import tensorflow as tf
 
 from multiprocessing import Queue, Pool
-from utils.detector_utils import WebcamVideoStream
-from utils import detector_utils as detector_utils
+from ML.utils.detector_utils import WebcamVideoStream
+from ML.utils import detector_utils as detector_utils
 
 frame_processed = 0
 score_thresh = 0.2
