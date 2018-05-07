@@ -104,6 +104,7 @@ async def listen(websocket, path):
                 if userID != 0:
                     if userID in activeConnections:
                         resp['status'] = STATUS_ALREADY_LOGGED_IN
+                        userID = 0
                     else:
                         print('User-ul ' + str(userID) + ' (' + msg['username'] + ') s-a conectat')
                         activeConnections[userID] = websocket
@@ -147,7 +148,8 @@ async def listen(websocket, path):
                     except:
                         pass
 
-            print('User-ul ' + str(userID) + ' s-a deconectat')
+            if userID != 0:
+                print('User-ul ' + str(userID) + ' s-a deconectat')
             break
 
 
