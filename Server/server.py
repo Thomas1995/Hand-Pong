@@ -74,13 +74,13 @@ def getUserData(userID):
 
 async def listen(websocket, path):
     userID = 0
-    resp = {}
 
     while 1:
         ret = ""
         try:
             ret = await websocket.recv()
             msg = json.loads(ret)
+            resp = {}
 
             print(msg)
 
@@ -127,8 +127,19 @@ async def listen(websocket, path):
                 del activeConnections[userID]
             if userID in readyToPlay:
                 readyToPlay.remove(userID)
-            # sterge userul din matches
-            # reintoarce adversarul sau in readyToPlay
+            for m in matches:
+                if m[0] == userID or m[1] == userID:
+                    enemyID = ""
+                    if m[0] == userID:
+                        enemyID = m[1]
+                    else:
+                        enemyID = m[0]
+                    resp = {'status': 'ENEMY_DISCONNECTED'}
+                    try:
+                        await activeConnections[enemyID].send(json.dumps(resp))
+                    except:
+                        pass
+
             print('User-ul ' + str(userID) + ' s-a deconectat')
             break
 
