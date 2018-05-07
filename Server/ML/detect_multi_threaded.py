@@ -44,74 +44,51 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
             score_q.put(-1)
     sess.close()
 
-class DefaultConfig(object):
-    def __init__(self):
-        super()
-        self.parser = argparse.ArgumentParser()
-        self.parser.add_argument('-src', '--source', dest='video_source', type=int,
-                                 default=0, help='Device index of the camera.')
-        self.parser.add_argument('-nhands', '--num_hands', dest='num_hands', type=int,
-                                 default=1, help='Max number of hands to detect.')
-        self.parser.add_argument('-fps', '--fps', dest='fps', type=int,
-                                 default=1, help='Show FPS on detection/display visualization')
-        self.parser.add_argument('-wd', '--width', dest='width', type=int,
-                                 default=300, help='Width of the frames in the video stream.')
-        self.parser.add_argument('-ht', '--height', dest='height', type=int,
-                                 default=300, help='Height of the frames in the video stream.')
-        self.parser.add_argument('-ds', '--display', dest='display', type=int,
-                                 default=1, help='Display the detected images using OpenCV. This reduces FPS')
-        self.parser.add_argument('-num-w', '--num-workers', dest='num_workers', type=int,
-                                 default=4, help='Number of workers.')
-        self.parser.add_argument('-q-size', '--queue-size', dest='queue_size', type=int,
-                                 default=5, help='Size of the queue.')
-        self.args = self.parser.parse_args()
-
-    def get_args(self):
-        return self.args
-
-class NoDisplayConfig(object):
-    def __init__(self):
-        super()
-        self.parser = argparse.ArgumentParser()
-        self.parser.add_argument('-src', '--source', dest='video_source', type=int,
-                                 default=0, help='Device index of the camera.')
-        self.parser.add_argument('-nhands', '--num_hands', dest='num_hands', type=int,
-                                 default=1, help='Max number of hands to detect.')
-        self.parser.add_argument('-fps', '--fps', dest='fps', type=int,
-                                 default=1, help='Show FPS on detection/display visualization')
-        self.parser.add_argument('-wd', '--width', dest='width', type=int,
-                                 default=300, help='Width of the frames in the video stream.')
-        self.parser.add_argument('-ht', '--height', dest='height', type=int,
-                                 default=300, help='Height of the frames in the video stream.')
-        self.parser.add_argument('-ds', '--display', dest='display', type=int,
-                                 default=0, help='Display the detected images using OpenCV. This reduces FPS')
-        self.parser.add_argument('-num-w', '--num-workers', dest='num_workers', type=int,
-                                 default=6, help='Number of workers.')
-        self.parser.add_argument('-q-size', '--queue-size', dest='queue_size', type=int,
-                                 default=5, help='Size of the queue.')
-        self.args = self.parser.parse_args()
-
-    def get_args(self):
-        return self.args
-
 class Model(object):
-    def __init__(self):
-        self.config = NoDisplayConfig()
-        self.args = self.config.get_args()
+    def __init__(self,
+                 video_source=0,
+                 num_hands=1,
+                 fps=1,
+                 width=300,
+                 height=300,
+                 display=0,
+                 num_workers=6,
+                 queue_size=5):
+        """
+        Args:
+            video_source: Device index of the camera.
+            num_hands: Max number of hands to detect.
+            fps: Show FPS on detection/display visualization.
+            width: Width of the frames in the video stream.
+            height: Height of the frames in the video stream.
+            display: Display the detected images using OpenCV. This reduces FPS
+            num_workers: Number of workers.
+            queue_size: Size of the queue.
+        """
+
+        self._args = {}
+        self._args['video_source'] = video_source
+        self._args['num_hands'] = num_hands
+        self._args['fps'] = fps
+        self._args['width'] = width
+        self._args['height'] = height
+        self._args['display'] = display
+        self._args['num_workers'] = num_workers
+        self._args['queue_size'] = queue_size
+
         self.pool = None
         self.index = 0
         self.num_frames = 0
         self.fps = 0
 
     def load_model(self):
-        args = self.args
-        self.input_q = Queue(maxsize=args.queue_size)
-        self.output_q = Queue(maxsize=args.queue_size)
-        self.score_q = Queue(maxsize=args.queue_size)
+        self.input_q = Queue(maxsize=self._args['queue_size'])
+        self.output_q = Queue(maxsize=self._args['queue_size'])
+        self.score_q = Queue(maxsize=self._args['queue_size'])
 
-        # video_capture = WebcamVideoStream(src=args.video_source,
-        #                                   width=args.width,
-        #                                   height=args.height).start()
+        # video_capture = WebcamVideoStream(src=self._args['video_source'],
+        #                                   width=self._args['width,']
+        #                                   height=self._args['height']).start()
 
         cap_params = {}
         frame_processed = 0
@@ -119,12 +96,12 @@ class Model(object):
         cap_params['score_thresh'] = score_thresh
 
         # max number of hands we want to detect/track
-        cap_params['num_hands_detect'] = args.num_hands
+        cap_params['num_hands_detect'] = self._args['num_hands']
 
-        print(cap_params, args)
+        print(cap_params, self._args)
 
         # spin up workers to paralleize detection.
-        self.pool = Pool(args.num_workers, worker,
+        self.pool = Pool(self._args['num_workers'], worker,
                          (self.input_q, self.output_q, self.score_q, cap_params, frame_processed))
 
     def inference_frame(self, frame):
@@ -149,8 +126,8 @@ class Model(object):
         # print("frame ",  index, num_frames, elapsed_time, fps)
 
         if output_frame is not None:
-            if self.args.display > 0:
-                if self.args.fps > 0:
+            if self._args['display'] > 0:
+                if self._args['fps'] > 0:
                     detector_utils.draw_fps_on_image(
                         "FPS : " + str(int(self.fps)), output_frame)
                 cv2.imshow('Muilti - threaded Detection', output_frame)

@@ -1,16 +1,18 @@
 import cv2
 
-from detect_multi_threaded import DefaultConfig
 from detect_multi_threaded import Model
 from utils.detector_utils import WebcamVideoStream
 
-args = DefaultConfig().get_args()
+args = {}
+args['video_source'] = 0
+args['width'] = 300
+args['height'] = 300
 
-video_capture = WebcamVideoStream(src=args.video_source,
-                                  width=args.width,
-                                  height=args.height).start()
+video_capture = WebcamVideoStream(src=args['video_source'],
+                                  width=args['width'],
+                                  height=args['height']).start()
 
-model = Model()
+model = Model(display=0)
 model.load_model()
 while True:
     frame = video_capture.read()
