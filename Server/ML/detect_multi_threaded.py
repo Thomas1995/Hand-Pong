@@ -112,37 +112,16 @@ class Model(object):
         frame = cv2.flip(frame, 1)
         self.index += 1
 
-        self.input_q.put(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        output_frame = self.output_q.get()
+        self.input_q.put(frame)
+        self.output_q.get()
         score = self.score_q.get()
-        # print(score, ' score here')
-
-        output_frame = cv2.cvtColor(output_frame, cv2.COLOR_RGB2BGR)
 
         elapsed_time = (datetime.datetime.now() -
                         self.start_time).total_seconds()
         self.num_frames += 1
         self.fps = self.num_frames / elapsed_time
-        # print("frame ",  index, num_frames, elapsed_time, fps)
 
-        if output_frame is not None:
-            if self._args['display'] > 0:
-                if self._args['fps'] > 0:
-                    detector_utils.draw_fps_on_image(
-                        "FPS : " + str(int(self.fps)), output_frame)
-                cv2.imshow('Muilti - threaded Detection', output_frame)
-                # if cv2.waitKey(1) & 0xFF == ord('q'):
-                #     break
-            else:
-                if self.num_frames == 400:
-                    self.num_frames = 0
-                    self.start_time = datetime.datetime.now()
-                else:
-                    print ("fps:{0}", self.fps)
-                    # print("frames processed: ", self.index,
-                          # "elapsed time: ", elapsed_time, "fps: ", str(int(self.fps)))
-                    # print("input queue size ", self.input_q.qsize())
-                    # print("output queue size ", self.output_q.qsize())
+        print ("fps:{0}", self.fps)
         return score
 
     def stop_inference(self):
