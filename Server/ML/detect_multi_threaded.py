@@ -6,7 +6,6 @@ import time
 import tensorflow as tf
 
 from multiprocessing import Queue, Pool
-from ML.utils.detector_utils import WebcamVideoStream
 from ML.utils import detector_utils as detector_utils
 
 frame_processed = 0
@@ -15,21 +14,14 @@ score_thresh = 0.2
 # Create a worker thread that loads graph and
 # does detection on images in an input queue and puts it on an output queue
 def worker(input_q, output_q, score_q, cap_params, frame_processed):
-    print(">> loading frozen model for worker")
     detection_graph, sess = detector_utils.load_inference_graph()
     sess = tf.Session(graph=detection_graph)
     while True:
-        # print("> ===== in worker loop, frame ", frame_processed)
         frame = input_q.get()
         if frame is not None:
             # actual detection
             boxes, scores = detector_utils.detect_objects(
                 frame, detection_graph, sess)
-
-            # draw bounding boxes
-            # detector_utils.draw_box_on_image(
-            #     cap_params['num_hands_detect'], cap_params["score_thresh"], scores, boxes, cap_params['im_width'],
-            #     cap_params['im_height'], frame)
 
             score = -1
             if scores[0] > score_thresh:
@@ -126,5 +118,4 @@ class Model(object):
 
     def stop_inference(self):
         self.pool.terminate()
-        # video_capture.stop()
         cv2.destroyAllWindows()
