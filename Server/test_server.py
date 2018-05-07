@@ -63,7 +63,7 @@ async def test(uri):
             raise Exception('Invalid credentials')
 
         # test match-making
-        msg = {'actionType': 1, 'username': 'thomas', 'password': 'parola'}
+        msg = {'actionType': 1, 'username': 'test2', 'password': 'parola'}
         await ws2.send(json.dumps(msg))
         await ws2.recv()
 
