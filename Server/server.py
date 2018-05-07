@@ -82,8 +82,6 @@ async def listen(websocket, path):
             msg = json.loads(ret)
             resp = {}
 
-            print(msg)
-
             if(msg['actionType'] == 0):
                 userID = registerUser(msg['username'], msg['email'], msg['password'])
                 if userID != 0:
@@ -98,10 +96,13 @@ async def listen(websocket, path):
             if(msg['actionType'] == 1):
                 userID = getUserID(msg['username'], msg['password'])
                 if userID != 0:
-                    print('User-ul ' + str(userID) + ' (' + msg['username'] + ') s-a conectat')
-                    activeConnections[userID] = websocket
-                    resp = getUserData(userID)
-                    resp['status'] = 'OK'
+                    if userID in activeConnections:
+                        resp['status'] = 'ALREADY_LOGGED_IN'
+                    else:
+                        print('User-ul ' + str(userID) + ' (' + msg['username'] + ') s-a conectat')
+                        activeConnections[userID] = websocket
+                        resp = getUserData(userID)
+                        resp['status'] = 'OK'
                 else:
                     resp['status'] = 'INVALID_CREDENTIALS'
                 await websocket.send(json.dumps(resp))
