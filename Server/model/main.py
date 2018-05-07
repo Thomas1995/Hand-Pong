@@ -1,7 +1,8 @@
+import cv2
+
 from detect_multi_threaded import DefaultConfig
 from detect_multi_threaded import Model
 from utils.detector_utils import WebcamVideoStream
-import cv2
 
 args = DefaultConfig().get_args()
 

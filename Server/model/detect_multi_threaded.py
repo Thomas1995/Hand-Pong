@@ -1,21 +1,19 @@
-from utils import detector_utils as detector_utils
-import cv2
-import tensorflow as tf
-import multiprocessing
-from multiprocessing import Queue, Pool
-import time
-from utils.detector_utils import WebcamVideoStream
 import datetime
 import argparse
+import cv2
+import multiprocessing
+import time
+import tensorflow as tf
+
+from multiprocessing import Queue, Pool
+from utils.detector_utils import WebcamVideoStream
+from utils import detector_utils as detector_utils
 
 frame_processed = 0
 score_thresh = 0.2
 
-
 # Create a worker thread that loads graph and
 # does detection on images in an input queue and puts it on an output queue
-
-
 def worker(input_q, output_q, score_q, cap_params, frame_processed):
     print(">> loading frozen model for worker")
     detection_graph, sess = detector_utils.load_inference_graph()
@@ -27,7 +25,6 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
             # actual detection
             boxes, scores = detector_utils.detect_objects(
                 frame, detection_graph, sess)
-
 
             # draw bounding boxes
             # detector_utils.draw_box_on_image(
@@ -47,9 +44,7 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
             score_q.put(-1)
     sess.close()
 
-
 class DefaultConfig(object):
-
     def __init__(self):
         super()
         self.parser = argparse.ArgumentParser()
@@ -75,7 +70,6 @@ class DefaultConfig(object):
         return self.args
 
 class NoDisplayConfig(object):
-
     def __init__(self):
         super()
         self.parser = argparse.ArgumentParser()
@@ -100,11 +94,10 @@ class NoDisplayConfig(object):
     def get_args(self):
         return self.args
 
-
 class Model(object):
-
     def __init__(self):
-        self.config = NoDisplayConfig()
+        # self.config = NoDisplayConfig()
+        self.config = DefaultConfig()
         self.args = self.config.get_args()
         self.pool = None
         self.index = 0
@@ -180,95 +173,3 @@ class Model(object):
         self.pool.terminate()
         # video_capture.stop()
         cv2.destroyAllWindows()
-
-
-if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-src', '--source', dest='video_source', type=int,
-                        default=0, help='Device index of the camera.')
-    parser.add_argument('-nhands', '--num_hands', dest='num_hands', type=int,
-                        default=2, help='Max number of hands to detect.')
-    parser.add_argument('-fps', '--fps', dest='fps', type=int,
-                        default=1, help='Show FPS on detection/display visualization')
-    parser.add_argument('-wd', '--width', dest='width', type=int,
-                        default=300, help='Width of the frames in the video stream.')
-    parser.add_argument('-ht', '--height', dest='height', type=int,
-                        default=200, help='Height of the frames in the video stream.')
-    parser.add_argument('-ds', '--display', dest='display', type=int,
-                        default=1, help='Display the detected images using OpenCV. This reduces FPS')
-    parser.add_argument('-num-w', '--num-workers', dest='num_workers', type=int,
-                        default=4, help='Number of workers.')
-    parser.add_argument('-q-size', '--queue-size', dest='queue_size', type=int,
-                        default=5, help='Size of the queue.')
-    args = parser.parse_args()
-
-    input_q = Queue(maxsize=args.queue_size)
-    output_q = Queue(maxsize=args.queue_size)
-
-    video_capture = WebcamVideoStream(src=args.video_source,
-                                      width=args.width,
-                                      height=args.height).start()
-
-    cap_params = {}
-    frame_processed = 0
-    cap_params['im_width'], cap_params['im_height'] = video_capture.size()
-    cap_params['score_thresh'] = score_thresh
-
-    # max number of hands we want to detect/track
-    cap_params['num_hands_detect'] = args.num_hands
-
-    print(cap_params, args)
-
-    # spin up workers to paralleize detection.
-    pool = Pool(args.num_workers, worker,
-                (input_q, output_q, cap_params, frame_processed))
-
-    start_time = datetime.datetime.now()
-    num_frames = 0
-    fps = 0
-    index = 0
-
-    while True:
-        frame = video_capture.read()
-        frame = cv2.flip(frame, 1)
-        index += 1
-
-        input_q.put(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        output_frame = output_q.get()
-
-        output_frame = cv2.cvtColor(output_frame, cv2.COLOR_RGB2BGR)
-
-        elapsed_time = (datetime.datetime.now() -
-                        start_time).total_seconds()
-        num_frames += 1
-        fps = num_frames / elapsed_time
-        # print("frame ",  index, num_frames, elapsed_time, fps)
-
-        if (output_frame is not None):
-            if (args.display > 0):
-                if (args.fps > 0):
-                    detector_utils.draw_fps_on_image(
-                        "FPS : " + str(int(fps)), output_frame)
-                cv2.imshow('Muilti - threaded Detection', output_frame)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
-            else:
-                if (num_frames == 400):
-                    num_frames = 0
-                    start_time = datetime.datetime.now()
-                else:
-                    print("frames processed: ", index,
-                          "elapsed time: ", elapsed_time, "fps: ", str(int(fps)))
-                    print("input queue size ", input_q.qsize())
-                    print("output queue size ", output_q.qsize())
-        else:
-            # print("video end")
-            break
-    elapsed_time = (datetime.datetime.now() -
-                    start_time).total_seconds()
-    fps = num_frames / elapsed_time
-    print("fps", fps)
-    pool.terminate()
-    video_capture.stop()
-    cv2.destroyAllWindows()

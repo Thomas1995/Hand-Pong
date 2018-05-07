@@ -1,15 +1,14 @@
 # Utilities for object detector.
-
-import numpy as np
 import sys
-import tensorflow as tf
 import os
+import cv2
+import tensorflow as tf
+import numpy as np
 from threading import Thread
 from datetime import datetime
-import cv2
-from utils import label_map_util
 from collections import defaultdict
 
+from utils import label_map_util
 
 detection_graph = tf.Graph()
 sys.path.append("..")
@@ -30,7 +29,6 @@ categories = label_map_util.convert_label_map_to_categories(
     label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
-
 # Load a frozen infrerence graph into memory
 def load_inference_graph():
 
@@ -47,7 +45,6 @@ def load_inference_graph():
     print(">  ====== Hand Inference graph loaded.")
     return detection_graph, sess
 
-
 # draw the detected bounding boxes on the images
 # You can modify this to also draw a label.
 def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, im_height, image_np):
@@ -59,12 +56,10 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
             p2 = (int(right), int(bottom))
             cv2.rectangle(image_np, p1, p2, (77, 255, 9), 3, 1)
 
-
 # Show fps value on image.
 def draw_fps_on_image(fps, image_np):
     cv2.putText(image_np, fps, (20, 50),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
-
 
 # Actual detection .. generate scores and bounding boxes given an image
 def detect_objects(image_np, detection_graph, sess):
@@ -89,7 +84,6 @@ def detect_objects(image_np, detection_graph, sess):
             detection_classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
     return np.squeeze(boxes), np.squeeze(scores)
-
 
 # Code to thread reading camera input.
 # Source : Adrian Rosebrock

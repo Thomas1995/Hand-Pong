@@ -16,11 +16,10 @@
 """Label map utility functions."""
 
 import logging
-
 import tensorflow as tf
 from google.protobuf import text_format
-from protos import string_int_label_map_pb2
 
+from protos import string_int_label_map_pb2
 
 def _validate_label_map(label_map):
     """Checks if a label map is valid.
@@ -34,7 +33,6 @@ def _validate_label_map(label_map):
     for item in label_map.item:
         if item.id < 1:
             raise ValueError('Label map ids should be >= 1.')
-
 
 def create_category_index(categories):
     """Creates dictionary of COCO compatible categories keyed by category id.
@@ -53,7 +51,6 @@ def create_category_index(categories):
     for cat in categories:
         category_index[cat['id']] = cat
     return category_index
-
 
 def convert_label_map_to_categories(label_map,
                                     max_num_classes,
@@ -104,7 +101,6 @@ def convert_label_map_to_categories(label_map,
             categories.append({'id': item.id, 'name': name})
     return categories
 
-
 def load_labelmap(path):
     """Loads label map proto.
 
@@ -122,7 +118,6 @@ def load_labelmap(path):
             label_map.ParseFromString(label_map_string)
     _validate_label_map(label_map)
     return label_map
-
 
 def get_label_map_dict(label_map_path):
     """Reads a label map and returns a dictionary of label names to id.
