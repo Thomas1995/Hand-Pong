@@ -145,7 +145,7 @@ async def listen(websocket, path):
                     for i in range(0, 300):
                         for j in range(0, 300):
                             for k in range(0, 3):
-                                picture[i][j][k] = int(msg['picture'][cnt:(cnt+3)])
+                                picture[i][j][2-k] = int(msg['picture'][cnt:(cnt+3)])
                                 cnt = cnt + 3
 
                     print(model.inference_frame(picture))
