@@ -38,33 +38,24 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
 
 class Model(object):
     def __init__(self,
-                 video_source=0,
                  num_hands=1,
-                 fps=1,
                  width=300,
                  height=300,
-                 display=0,
                  num_workers=6,
                  queue_size=5):
         """
         Args:
-            video_source: Device index of the camera.
             num_hands: Max number of hands to detect.
-            fps: Show FPS on detection/display visualization.
-            width: Width of the frames in the video stream.
-            height: Height of the frames in the video stream.
-            display: Display the detected images using OpenCV. This reduces FPS
+            width: Width of the frames.
+            height: Height of the frames.
             num_workers: Number of workers.
             queue_size: Size of the queue.
         """
 
         self._args = {}
-        self._args['video_source'] = video_source
         self._args['num_hands'] = num_hands
-        self._args['fps'] = fps
         self._args['width'] = width
         self._args['height'] = height
-        self._args['display'] = display
         self._args['num_workers'] = num_workers
         self._args['queue_size'] = queue_size
 
@@ -78,13 +69,9 @@ class Model(object):
         self.output_q = Queue(maxsize=self._args['queue_size'])
         self.score_q = Queue(maxsize=self._args['queue_size'])
 
-        # video_capture = WebcamVideoStream(src=self._args['video_source'],
-        #                                   width=self._args['width,']
-        #                                   height=self._args['height']).start()
-
         cap_params = {}
         frame_processed = 0
-        cap_params['im_width'], cap_params['im_height'] = 300, 300
+        cap_params['im_width'], cap_params['im_height'] = self._args['width'], self._args['height']
         cap_params['score_thresh'] = score_thresh
 
         # max number of hands we want to detect/track
