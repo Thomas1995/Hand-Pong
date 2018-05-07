@@ -1,9 +1,10 @@
+import sys
 import asyncio
 import websockets
 import json
 import sqlite3
 
-ADDRESS = '192.168.0.207'
+ADDRESS = 'localhost'
 PORT = 9950
 
 activeConnections = {}
@@ -14,8 +15,8 @@ dbConn = None
 def getUserID(username, password):
     cursor = dbConn.cursor()
 
-    sql_command = 'SELECT userID FROM users WHERE username = \"' + username + '\" AND password = \"' + password + '\"'
-    cursor.execute(sql_command)
+    sql_command = 'SELECT userID FROM users WHERE username = ? AND password = ?'
+    cursor.execute(sql_command, (username, password))
     result = cursor.fetchall()
 
     if(result == []):
@@ -43,8 +44,9 @@ def registerUser(username, email, password):
     else:
         userID = 1
 
-    sql_command = 'INSERT INTO users VALUES (' + str(userID) + ', \"' + username + '\", \"' + email + '\", \"' + password + '\", 0, 0)'
-    cursor.execute(sql_command)
+    sql_command = 'INSERT INTO users VALUES (?, ?, ?, ?, 0, 0)'
+    sql_args = (str(userID), username, email, password)
+    cursor.execute(sql_command, sql_args)
 
     try:
         sql_command = 'COMMIT'
@@ -57,8 +59,8 @@ def registerUser(username, email, password):
 def getUserData(userID):
     cursor = dbConn.cursor()
 
-    sql_command = 'SELECT username, email, win, loss FROM users WHERE userID = ' + str(userID)
-    cursor.execute(sql_command)
+    sql_command = 'SELECT username, email, win, loss FROM users WHERE userID = ?'
+    cursor.execute(sql_command, (str(userID),))
     result = cursor.fetchall()
 
     ret = {}
@@ -131,21 +133,25 @@ async def listen(websocket, path):
             break
 
 
-start_server = websockets.serve(listen, ADDRESS, PORT)
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        ADDRESS = sys.argv[1]
 
-dbConn = sqlite3.connect("pong.db")
-cursor = dbConn.cursor()
-sql_command = """
-CREATE TABLE IF NOT EXISTS users (
-userID INTEGER PRIMARY KEY,
-username VARCHAR(30),
-email VARCHAR(30),
-password VARCHAR(30),
-win INTEGER,
-loss INTEGER);"""
-cursor.execute(sql_command)
+    start_server = websockets.serve(listen, ADDRESS, PORT)
 
-print('Server started...')
+    dbConn = sqlite3.connect("pong.db")
+    cursor = dbConn.cursor()
+    sql_command = """
+    CREATE TABLE IF NOT EXISTS users (
+    userID INTEGER PRIMARY KEY,
+    username VARCHAR(30),
+    email VARCHAR(30),
+    password VARCHAR(30),
+    win INTEGER,
+    loss INTEGER);"""
+    cursor.execute(sql_command)
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+    print('Server started...')
+
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
