@@ -92,6 +92,7 @@ async def test(uri):
             raise Exception('fail')
 
         await ws.close()
+        raise Exception('fail')
     except:
         print('Some test(s) failed')
         raise
