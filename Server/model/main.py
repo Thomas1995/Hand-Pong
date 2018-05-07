@@ -10,7 +10,7 @@ video_capture = WebcamVideoStream(src=args.video_source,
                                   height=args.height).start()
 
 model = Model()
-model.load_model(video_capture)
+model.load_model()
 while True:
     frame = video_capture.read()
     if cv2.waitKey(1) & 0xFF == ord('q'):

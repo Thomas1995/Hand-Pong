@@ -62,7 +62,7 @@ class DefaultConfig(object):
         self.parser.add_argument('-wd', '--width', dest='width', type=int,
                                  default=300, help='Width of the frames in the video stream.')
         self.parser.add_argument('-ht', '--height', dest='height', type=int,
-                                 default=200, help='Height of the frames in the video stream.')
+                                 default=300, help='Height of the frames in the video stream.')
         self.parser.add_argument('-ds', '--display', dest='display', type=int,
                                  default=1, help='Display the detected images using OpenCV. This reduces FPS')
         self.parser.add_argument('-num-w', '--num-workers', dest='num_workers', type=int,
@@ -88,7 +88,7 @@ class NoDisplayConfig(object):
         self.parser.add_argument('-wd', '--width', dest='width', type=int,
                                  default=300, help='Width of the frames in the video stream.')
         self.parser.add_argument('-ht', '--height', dest='height', type=int,
-                                 default=200, help='Height of the frames in the video stream.')
+                                 default=300, help='Height of the frames in the video stream.')
         self.parser.add_argument('-ds', '--display', dest='display', type=int,
                                  default=0, help='Display the detected images using OpenCV. This reduces FPS')
         self.parser.add_argument('-num-w', '--num-workers', dest='num_workers', type=int,
@@ -111,7 +111,7 @@ class Model(object):
         self.num_frames = 0
         self.fps = 0
 
-    def load_model(self, video_capture):
+    def load_model(self):
         args = self.args
         self.input_q = Queue(maxsize=args.queue_size)
         self.output_q = Queue(maxsize=args.queue_size)
@@ -123,7 +123,7 @@ class Model(object):
 
         cap_params = {}
         frame_processed = 0
-        cap_params['im_width'], cap_params['im_height'] = video_capture.size()
+        cap_params['im_width'], cap_params['im_height'] = 300, 300
         cap_params['score_thresh'] = score_thresh
 
         # max number of hands we want to detect/track
