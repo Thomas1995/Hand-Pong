@@ -12,6 +12,12 @@ readyToPlay = []
 matches = []
 dbConn = None
 
+STATUS_OK = 'OK'
+STATUS_ALREADY_LOGGED_IN = 'ALREADY_LOGGED_IN'
+STATUS_INVALID_CREDENTIALS = 'INVALID_CREDENTIALS'
+STATUS_NO_USER_ID = 'NO_USER_ID'
+STATUS_ENEMY_DISCONNECTED = 'ENEMY_DISCONNECTED'
+
 def getUserID(username, password):
     cursor = dbConn.cursor()
 
@@ -88,28 +94,28 @@ async def listen(websocket, path):
                     print('User-ul ' + str(userID) + ' (' + msg['username'] + ') a fost creat')
                     activeConnections[userID] = websocket
                     resp = getUserData(userID)
-                    resp['status'] = 'OK'
+                    resp['status'] = STATUS_OK
                 else:
-                    resp['status'] = 'INVALID_CREDENTIALS'
+                    resp['status'] = STATUS_INVALID_CREDENTIALS
                 await websocket.send(json.dumps(resp))
 
             if(msg['actionType'] == 1):
                 userID = getUserID(msg['username'], msg['password'])
                 if userID != 0:
                     if userID in activeConnections:
-                        resp['status'] = 'ALREADY_LOGGED_IN'
+                        resp['status'] = STATUS_ALREADY_LOGGED_IN
                     else:
                         print('User-ul ' + str(userID) + ' (' + msg['username'] + ') s-a conectat')
                         activeConnections[userID] = websocket
                         resp = getUserData(userID)
-                        resp['status'] = 'OK'
+                        resp['status'] = STATUS_OK
                 else:
-                    resp['status'] = 'INVALID_CREDENTIALS'
+                    resp['status'] = STATUS_INVALID_CREDENTIALS
                 await websocket.send(json.dumps(resp))
 
             if(msg['actionType'] == 2):
                 if userID == 0:
-                    resp['status'] = 'NO_USER_ID'
+                    resp['status'] = STATUS_NO_USER_ID
                     await websocket.send(json.dumps(resp))
                 else:
                     if len(readyToPlay) == 0:
@@ -120,7 +126,7 @@ async def listen(websocket, path):
                         enemyID = readyToPlay.pop()
                         print("User-ul " + str(userID) + " va juca impotriva lui " + str(enemyID))
                         matches.append((userID, enemyID))
-                        resp['status'] = 'OK'
+                        resp['status'] = STATUS_OK
                         await websocket.send(json.dumps(resp))
                         await activeConnections[enemyID].send(json.dumps(resp))
         except:
@@ -135,7 +141,7 @@ async def listen(websocket, path):
                         enemyID = m[1]
                     else:
                         enemyID = m[0]
-                    resp = {'status': 'ENEMY_DISCONNECTED'}
+                    resp = {'status': STATUS_ENEMY_DISCONNECTED}
                     try:
                         await activeConnections[enemyID].send(json.dumps(resp))
                     except:
