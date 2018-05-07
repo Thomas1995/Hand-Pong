@@ -5,6 +5,8 @@ import json
 import sqlite3
 import numpy
 
+from ML.detect_multi_threaded import Model
+
 ADDRESS = 'localhost'
 PORT = 9950
 
@@ -12,6 +14,7 @@ activeConnections = {}
 readyToPlay = []
 matches = []
 dbConn = None
+model = None
 
 STATUS_OK = 'OK'
 STATUS_ALREADY_LOGGED_IN = 'ALREADY_LOGGED_IN'
@@ -185,6 +188,9 @@ if __name__ == "__main__":
     win INTEGER,
     loss INTEGER);"""
     cursor.execute(sql_command)
+
+    model = Model()
+    model.load_model()
 
     print('Server started...')
 
