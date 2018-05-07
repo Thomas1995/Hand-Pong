@@ -94,6 +94,7 @@ async def test(uri):
         await ws.close()
     except:
         print('Some test(s) failed')
+        raise
 
 
 if __name__ == "__main__":
