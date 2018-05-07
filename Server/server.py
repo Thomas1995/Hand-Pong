@@ -3,7 +3,7 @@ import asyncio
 import websockets
 import json
 import sqlite3
-import numpy
+import numpy as np
 
 from ML.detect_multi_threaded import Model
 
@@ -84,7 +84,7 @@ def getUserData(userID):
 
 async def listen(websocket, path):
     userID = 0
-    picture = numpy.zeros((300, 300, 3))
+    picture = np.zeros((300, 300, 3), dtype=np.uint8)
 
     while 1:
         ret = ""
@@ -147,6 +147,8 @@ async def listen(websocket, path):
                             for k in range(0, 3):
                                 picture[i][j][k] = int(msg['picture'][cnt:(cnt+3)])
                                 cnt = cnt + 3
+
+                    print(model.inference_frame(picture))
 
         except:
             if userID in activeConnections:
