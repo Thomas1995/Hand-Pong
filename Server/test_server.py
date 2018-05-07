@@ -25,13 +25,13 @@ async def test(uri):
         if resp['status'] == STATUS_OK:
             print('Test passed: Login')
         else:
-            raise Exception('fail')
+            raise Exception('Login')
 
         # test userdata
         if resp['username'] == 'test':
             print('Test passed: Getting userdata')
         else:
-            raise Exception('fail')
+            raise Exception('Getting userdata')
 
         # test multiple login
         await ws2.send(json.dumps(msg))
@@ -40,7 +40,7 @@ async def test(uri):
         if resp['status'] == STATUS_ALREADY_LOGGED_IN:
             print('Test passed: Multiple login')
         else:
-            raise Exception('fail')
+            raise Exception('Multiple login')
 
         # test no user id
         msg = {'actionType': 2}
@@ -50,7 +50,7 @@ async def test(uri):
         if resp['status'] == STATUS_NO_USER_ID:
             print('Test passed: Request without user ID')
         else:
-            raise Exception('fail')
+            raise Exception('Request without user ID')
 
         # test invalid credentials
         msg = {'actionType': 1, 'username': 'test', 'password': 'parol'}
@@ -60,7 +60,7 @@ async def test(uri):
         if resp['status'] == STATUS_INVALID_CREDENTIALS:
             print('Test passed: Invalid credentials')
         else:
-            raise Exception('fail')
+            raise Exception('Invalid credentials')
 
         # test match-making
         msg = {'actionType': 1, 'username': 'thomas', 'password': 'parola'}
@@ -78,9 +78,9 @@ async def test(uri):
             if resp['status'] == STATUS_OK:
                 print('Test passed: Match-making')
             else:
-                raise Exception('fail')
+                raise Exception('Match-making')
         else:
-            raise Exception('fail')
+            raise Exception('Match-making')
 
         # test disconnect during match
         await ws2.close()
@@ -89,7 +89,7 @@ async def test(uri):
         if resp['status'] == STATUS_ENEMY_DISCONNECTED:
             print('Test passed: Disconnect during match')
         else:
-            raise Exception('fail')
+            raise Exception('Disconnect during match')
 
         await ws.close()
     except:
