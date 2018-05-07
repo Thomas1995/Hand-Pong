@@ -148,7 +148,8 @@ async def listen(websocket, path):
                                 picture[i][j][k] = int(msg['picture'][cnt:(cnt+3)])
                                 cnt = cnt + 3
 
-                    print(model.inference_frame(picture))
+                    coord = model.inference_frame(picture)
+                    await websocket.send(json.dumps({'coord': coord}))
 
         except:
             if userID in activeConnections:
