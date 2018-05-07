@@ -1,5 +1,5 @@
 var conn = null;
-var urlConnection = 'ws://192.168.0.207:9950';
+var urlConnection = 'ws://localhost:9950';
 
 $(document).ready(function() {
   
