@@ -96,8 +96,7 @@ class NoDisplayConfig(object):
 
 class Model(object):
     def __init__(self):
-        # self.config = NoDisplayConfig()
-        self.config = DefaultConfig()
+        self.config = NoDisplayConfig()
         self.args = self.config.get_args()
         self.pool = None
         self.index = 0
