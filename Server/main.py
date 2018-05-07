@@ -1,7 +1,7 @@
 import cv2
 
-from detect_multi_threaded import Model
-from utils.detector_utils import WebcamVideoStream
+from ML.detect_multi_threaded import Model
+from ML.utils.detector_utils import WebcamVideoStream
 
 args = {}
 args['video_source'] = 0
