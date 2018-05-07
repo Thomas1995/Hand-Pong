@@ -3,6 +3,7 @@ import asyncio
 import websockets
 import json
 import sqlite3
+import numpy
 
 ADDRESS = 'localhost'
 PORT = 9950
@@ -80,6 +81,7 @@ def getUserData(userID):
 
 async def listen(websocket, path):
     userID = 0
+    picture = numpy.zeros((300, 300, 3))
 
     while 1:
         ret = ""
@@ -130,6 +132,19 @@ async def listen(websocket, path):
                         resp['status'] = STATUS_OK
                         await websocket.send(json.dumps(resp))
                         await activeConnections[enemyID].send(json.dumps(resp))
+
+            if(msg['actionType'] == 3):
+                if userID == 0:
+                    resp['status'] = STATUS_NO_USER_ID
+                    await websocket.send(json.dumps(resp))
+                else:
+                    cnt = 0
+                    for i in range(0, 300):
+                        for j in range(0, 300):
+                            for k in range(0, 3):
+                                picture[i][j][k] = int(msg['picture'][cnt:(cnt+3)])
+                                cnt = cnt + 3
+
         except:
             if userID in activeConnections:
                 del activeConnections[userID]
