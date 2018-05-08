@@ -145,8 +145,8 @@ async def listen(websocket, path):
                         resp['player2_win'] = player2data['win']
                         resp['player2_loss'] = player2data['loss']
 
-                        lastCoord[userID] = -1;
-                        lastCoord[enemyID] = -1;
+                        lastCoord[userID] = 0.5;
+                        lastCoord[enemyID] = 0.5;
 
                         resp['player'] = 1
                         await websocket.send(json.dumps(resp))
@@ -167,7 +167,8 @@ async def listen(websocket, path):
                                 cnt = cnt + 3
 
                     coord = model.inference_frame(picture)
-                    lastCoord[userID] = coord
+                    if coord != -1:
+                        lastCoord[userID] = coord
 
                     enemyID = 0
                     for m in matches:
