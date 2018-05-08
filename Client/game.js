@@ -84,6 +84,7 @@ Game = {
     if (Game.compatible())
       return Object.construct(Game.Runner, id, game, cfg).game; // return the game instance, not the runner (caller can always get at the runner via game.runner)
   },
+  
 
   ua: function() { // should avoid user agent sniffing... but sometimes you just gotta do what you gotta do
     var ua  = navigator.userAgent.toLowerCase();
@@ -152,8 +153,8 @@ Game = {
     }
   },
 
-  random: function(min, max) {
-    return (min + (Math.random() * (max - min)));
+  random: function(min, max, scores) {		
+    return (min + ((scores[0] + scores[1])/18 * (max - min)));
   },
 
   timestamp: function() { 
@@ -161,29 +162,29 @@ Game = {
   },
 
   KEY: {
-    BACKSPACE: 8,
-    TAB:       9,
-    RETURN:   13,
-    ESC:      27,
-    SPACE:    32,
-    LEFT:     37,
-    UP:       38,
-    RIGHT:    39,
-    DOWN:     40,
-    DELETE:   46,
-    HOME:     36,
-    END:      35,
-    PAGEUP:   33,
-    PAGEDOWN: 34,
-    INSERT:   45,
-    ZERO:     48,
+//    BACKSPACE: 8,
+//    TAB:       9,
+//    RETURN:   13,
+//    ESC:      27,
+//    SPACE:    32,
+//    LEFT:     37,
+//    UP:       38,
+//    RIGHT:    39,
+//    DOWN:     40,
+//    DELETE:   46,
+//    HOME:     36,
+//    END:      35,
+//    PAGEUP:   33,
+//    PAGEDOWN: 34,
+//    INSERT:   45,
+//    ZERO:     48,
     ONE:      49,
-    TWO:      50,
+//    TWO:      50,
     A:        65,
     L:        76,
     P:        80,
     Q:        81,
-    TILDA:    192
+//    TILDA:    192
   },
 
   //-----------------------------------------------------------------------------
@@ -219,12 +220,15 @@ Game = {
     stop: function() {
       clearInterval(this.timer);
     },
+	
 
     loop: function() {
       var start  = Game.timestamp(); this.update((start - this.lastFrame)/1000.0); // send dt as seconds
       var middle = Game.timestamp(); this.draw();
       var end    = Game.timestamp();
-      this.updateStats(middle - start, end - middle);
+     
+
+	 this.updateStats(middle - start, end - middle);
       this.lastFrame = start;
     },
 

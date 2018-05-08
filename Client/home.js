@@ -136,6 +136,11 @@ $(document).ready(function() {
 				  setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
 				  $("#enterGameBtn").prop("disabled",false);
 				  $("#closeGameBtn").prop("disabled",false);
+				  
+		var x = Math.random();	
+		console.log(x);
+		Pong.moveLeftPaddle(x); 			  
+				  		  
 	  
   });
   

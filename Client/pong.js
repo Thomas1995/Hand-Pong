@@ -67,6 +67,12 @@ Pong = {
       }
     }
   },
+  
+  moveLeftPaddle: function(td) {
+	  
+	  //this.onkeydown(49);
+	  console.log(td);
+    },
 
   goal: function(playerNo) {
     this.scores[playerNo] += 1;
@@ -294,7 +300,7 @@ Pong = {
     },
 
     reset: function(playerNo) {
-      this.setpos(playerNo == 1 ?   this.maxX : this.minX,  Game.random(this.minY, this.maxY));
+      this.setpos(playerNo == 1 ?   this.maxX : this.minX,  Game.random(this.minY, this.maxY, this.pong.scores));
       this.setdir(playerNo == 1 ? -this.speed : this.speed, this.speed);
     },
 
