@@ -404,6 +404,8 @@ html {
 	width:900px;
 	height:450px;
 	padding:10px;
+	border-style: solid;
+	border-color:rgb(134,111,97);
 }
 
 .playersStatistics{
@@ -430,6 +432,11 @@ html {
 	font-size:20px;
 }
 
+.player1Score{
+	color:rgb(134,111,97);
+	font-size:30px;
+}
+
 .player2Username{
 	float:right;
 	color:rgb(134,111,97);
@@ -440,6 +447,12 @@ html {
 	float:right;
 	color:rgb(134,111,97);
 	font-size:20px;
+}
+
+.player2Score{
+	float:right;
+	color:rgb(134,111,97);
+	font-size:30px;
 }
 
 .divInformationHeader{

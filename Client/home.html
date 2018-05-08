@@ -4,13 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<link rel="stylesheet" href="styles.css">
 	<script src="home.js"></script>
-	<script src="game.js" type="text/javascript"></script> 
-  <script src="pong.js" type="text/javascript"></script>
-  <script type="text/javascript">
-  Game.ready(function() {
-    Game.start('game', Pong);
-  });
-  </script>
+
 </head>
 <body>
 
@@ -165,6 +159,9 @@
 				<div class="divInformationHeader">
 					<label id="player1Statistics" class="player1Statistics">Wins/Losses: 32/10</label>
 				</div>
+				<div class="divInformationHeader">
+					<label id="player1Score" class="player1Score">0</label>
+				</div>
 			</div>	
 			<div class="divVideo">
 				<video id="video" width="120" height=90"></video>
@@ -176,14 +173,20 @@
 				<div class="divInformationHeader">
 					<label id="player2Statistics" class="player2Statistics" value="Wins/Losses: 1/100"/>Wins/Losses: 1/100</label>
 				</div>
+				<div class="divInformationHeader">
+					<label id="player2Score" class="player2Score">0</label>
+				</div>
 			</div>
 		</div>
 		<div class="game">
-			<canvas id="game">
-				<div id="unsupported">
-				  Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-				</div>
-			</canvas>
+			<div id="paddle1"  style="position:absolute;left:12px;top:460px;width:10px;height:110px;background-color:white;">
+			</div>
+			<div id="wall"  style="position:absolute;left:12px;top:290px;width:0px;height:460px;border-style: dashed;border-color:white;border-width:10px;padding-top:5px;">
+			</div>
+			<div id="ball"  style="position:absolute;left:820px;top:510px;width:15px;height:15px;background-color:white;border-radius:50%;">
+			</div>
+			<div id="paddle2"  style="position:absolute;left:950px;top:460px;width:10px;height:110px;background-color:white;">
+			</div>
 		</div>
 		<button id="capture">Capture</button>
 	</div>

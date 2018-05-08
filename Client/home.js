@@ -136,12 +136,13 @@ $(document).ready(function() {
 				  setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
 				  $("#enterGameBtn").prop("disabled",false);
 				  $("#closeGameBtn").prop("disabled",false);
-				  
-		var x = Math.random();	
-		console.log(x);
-		Pong.moveLeftPaddle(x); 			  
-				  		  
-	  
+
+	  $('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
+	  $('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
+	  $('#wall').css('left', (document.body.clientWidth / 2));	  
+	  setTimeout(function() {
+		startBall(0);
+	  }, 2000);
   });
   
   $("#closeGameBtn").click(function() {
@@ -232,6 +233,13 @@ $(document).ready(function() {
 	  };
 	  conn.send(JSON.stringify(msg));
 	  */
+	  
+	  
+	});
+	
+	$( window ).resize(function() {
+	  $('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
+	  $('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
 	});
     
 });
@@ -290,3 +298,131 @@ function updateItems(delta)
     }
 }
 
+
+setInterval(function(){ 
+	speedOfPaddle1 = 0.3;
+}, 3000);
+setInterval(function(){ 
+	speedOfPaddle1 = 0;
+}, 5000);
+//var height = $('#idDiv').height();
+//var width = $('#idDiv').width()
+//var top = $('#idDiv').offset().top;
+//var left = $('#idDiv').offset().left;
+var paddleHeight = 120;
+var paddleWidth = 10;
+var ballRadius = 15;
+var halfPaddleHeight = paddleHeight / 2;
+var speedOfPaddle1 = 0;
+var positionOfPaddle1 = 460;
+var speedOfPaddle2 = 0;
+var positionOfPaddle2 = 460;
+var topPositionOfBall = 510;
+var leftPositionOfBall = 820;
+var topSpeedOfBall = 0;
+var leftSpeedOfBall = 0;
+var score1 = 0;
+var score2 = 0;
+function startBall(x) {
+	topPositionOfBall = (score1 + score2)/18 * 400 + 300;
+	if (x < 0.5) {
+		var side = 1;
+		leftPositionOfBall = (document.body.clientWidth / 2) - (955 / 2) + 50;
+	} else {
+		var side = -1;
+		leftPositionOfBall = (document.body.clientWidth / 2) + (955 / 2) - 50;
+	}
+	topSpeedOfBall = 3;
+	leftSpeedOfBall = side * 3;
+};
+
+document.addEventListener('keydown', function (e) {
+     if (e.keyCode == 87 || e.which == 87) { // W key
+      speedOfPaddle1 = -10;
+     }
+     if (e.keyCode == 83 || e.which == 83) { // S Key
+      speedOfPaddle1 = 10;
+     }
+     if (e.keyCode == 38 || e.which == 38) { // up arrow
+      speedOfPaddle2 = -10;
+     }
+     if (e.keyCode == 40 || e.which == 40) { // down arrow
+      speedOfPaddle2 = 10;
+     }
+}, false);
+document.addEventListener('keyup', function (e) {
+	if (e.keyCode == 87 || e.which == 87) {
+		speedOfPaddle1 = 0;
+	}
+	if (e.keyCode == 83 || e.which == 83) {
+		speedOfPaddle1 = 0;
+	}
+	if (e.keyCode == 38 || e.which == 38) {
+		speedOfPaddle2 = 0;
+	}
+	if (e.keyCode == 40 || e.which == 40) {
+		speedOfPaddle2 = 0;
+	}
+}, false);
+function print() {
+	console.log(positionOfPaddle1);
+}
+var gameLoop = window.setInterval(function show() {
+	positionOfPaddle1 += speedOfPaddle1;
+	positionOfPaddle2 += speedOfPaddle2;
+	topPositionOfBall += topSpeedOfBall;
+	leftPositionOfBall += leftSpeedOfBall;
+	if (positionOfPaddle1 <= 300) {
+		positionOfPaddle1 = 300;
+	}
+	if (positionOfPaddle2 <= 300) {
+		positionOfPaddle2 = 300;
+	}
+	if (positionOfPaddle1 >= 770 -110) {
+		positionOfPaddle1 = 770 - 110;
+	}
+	if (positionOfPaddle2 > 770 - 110) {
+		positionOfPaddle2 = 770 - 110;
+	}
+	if (topPositionOfBall <= 300 || topPositionOfBall >= 770 - ballRadius) {
+		topSpeedOfBall = -topSpeedOfBall
+	}
+	if (leftPositionOfBall <= (window.innerWidth / 2) - (955 / 2) + 28) {
+		//alert(topPositionOfBall - ballRadius / 2 + ' ' + positionOfPaddle1 + ' ' + paddleHeight);
+		if (topPositionOfBall - ballRadius / 2 > positionOfPaddle1 && topPositionOfBall < positionOfPaddle1 + paddleHeight) {
+			leftSpeedOfBall = -leftSpeedOfBall;
+		} else {
+			score2++;
+			if(score1 < 9 && score2 < 9){
+				startBall(1);
+			}
+			else{
+				alert("gata");
+				window.clearInterval(gameLoop);
+			}
+			
+		}
+	}
+	if (leftPositionOfBall >= (document.body.clientWidth / 2) + (955 / 2) - 18 - ballRadius) {
+		//alert(topPositionOfBall + ' ' + positionOfPaddle2 + ' ' + paddleHeight);
+		if (topPositionOfBall > positionOfPaddle2 && topPositionOfBall < positionOfPaddle2 + paddleHeight) {
+			leftSpeedOfBall = -leftSpeedOfBall
+		} else {
+			score1++;
+			if(score1 < 9 && score2 < 9){
+				startBall(0);
+			}
+			else{
+				alert("gata");
+				window.clearInterval(gameLoop);
+			}
+			
+		}
+	}
+	document.getElementById("paddle1").style.top = (positionOfPaddle1) + "px";
+	document.getElementById("paddle2").style.top = (positionOfPaddle2) + "px";
+	document.getElementById("ball").style.top = (topPositionOfBall) + "px";
+	document.getElementById("ball").style.left = (leftPositionOfBall) + "px";
+	$("#player1Score").text(score1);
+	$("#player2Score").text(score2);
+}, 1000/60);
