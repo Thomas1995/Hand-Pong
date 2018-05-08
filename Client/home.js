@@ -1,5 +1,5 @@
 var conn = null;
-var urlConnection = 'ws://localhost:9950';
+var urlConnection = 'ws://192.168.0.207:9950';
 
 $(document).ready(function() {
   
@@ -33,7 +33,7 @@ $(document).ready(function() {
   $("#loginBtn").click(function() {
 	  var username = $("#emailLogin").val();
 	  var password = $("#passwordLogin").val();
-	  
+	  /*
 	  var msg = {};
 	  
 	  msg["actionType"] = 1;
@@ -59,7 +59,10 @@ $(document).ready(function() {
 		
 	  };
 	  conn.onopen = () => conn.send(JSON.stringify(msg));			
-	  
+	  */
+	  var divLogin = $("#divLogin");
+		  removeElement(divLogin);
+		  setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
   });
   
   $("#signUpBtn").click(function() {
@@ -99,7 +102,7 @@ $(document).ready(function() {
   });
   
   $("#enterGameBtn").click(function() {
-	  	
+	  	/*
 	  var msg = {};
 	  
 	  msg["actionType"] = 2;
@@ -126,6 +129,13 @@ $(document).ready(function() {
 	 	
 	  };
 	  conn.send(JSON.stringify(msg));	
+	  */
+	  hidePleaseWait();
+				  var divLobby = $("#divLobby");
+				  removeElement(divLobby);
+				  setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
+				  $("#enterGameBtn").prop("disabled",false);
+				  $("#closeGameBtn").prop("disabled",false);
 	  
   });
   
@@ -174,7 +184,7 @@ $(document).ready(function() {
  
         var img = document.createElement("img");
         img.src = canvas.toDataURL();
-        $("#output").append(img);
+        //$("#output").append(img);
 		
 		var data = canvas.getContext("2d").getImageData(0, 0, 300, 300).data; 
 		var stringPicture = '';
@@ -204,7 +214,7 @@ $(document).ready(function() {
 			}
 		}
 		*/
-	 //Aici Thomas	
+	  /*		
 	  var msg = {};
 	  
 	  msg["actionType"] = 3;
@@ -216,6 +226,7 @@ $(document).ready(function() {
 	  	 	
 	  };
 	  conn.send(JSON.stringify(msg));
+	  */
 	});
     
 });

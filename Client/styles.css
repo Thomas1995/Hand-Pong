@@ -361,11 +361,13 @@ html {
 
 .divGame{
 	margin: auto;
-	margin-top:190px;
-    width: 1150px;
-	height:600px;
+	margin-top:170px;
+    width: 1000px;
+	height:620px;
 	display:none;
 	background-color:white;
+	border-radius: 12px;
+	border: 2px solid white;
 }
 
 .modal-dialog { 
@@ -385,4 +387,63 @@ html {
 
 .modal-title{
 	color: rgb(134,111,97);
+}
+
+.divVideo{
+	margin:auto;
+	margin-top:15px;
+	width:120px;
+	height:90px;
+	float: left;
+}
+
+.game{
+	background-color:rgb(134,111,97);
+	margin:auto;
+	margin-top:15px;
+	width:900px;
+	height:450px;
+	padding:10px;
+}
+
+.playersStatistics{
+	float: left; 
+	width: 390px;
+	height:90px;
+	margin-top:15px;
+}
+
+.headerGame{
+	width:900px;
+	height:90px;
+	padding:10px;
+	margin:auto;
+}
+
+.player1Username{
+	color:rgb(134,111,97);
+	font-size:30px;
+}
+
+.player1Statistics{
+	color:rgb(134,111,97);
+	font-size:20px;
+}
+
+.player2Username{
+	float:right;
+	color:rgb(134,111,97);
+	font-size:30px;
+}
+
+.player2Statistics{
+	float:right;
+	color:rgb(134,111,97);
+	font-size:20px;
+}
+
+.divInformationHeader{
+	width:100%;
+	overflow: auto
+	
 }
