@@ -90,8 +90,6 @@ class Model(object):
         self.input_q.put(frame)
         score = self.score_q.get()
 
-        print(self.input_q.qsize, self.score_q.qsize)
-
         elapsed_time = (datetime.datetime.now() -
                         self.start_time).total_seconds()
         self.num_frames += 1
