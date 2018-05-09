@@ -283,7 +283,10 @@ function sendPhoto() {
 		
 		window.clearInterval(id1);
 		window.clearInterval(id2);
-
+		
+		topPositionOfBall = obj.ballX;
+		leftPositionOfBall = obj.ballY;
+		
 		var deviation1 = Math.floor(400 * (1 - obj.player1coord) + 300);
 		var deviation2 = Math.floor(400 * (1 - obj.player2coord) + 300)
 			
@@ -325,6 +328,8 @@ function sendPhoto() {
 	  
 		msg["actionType"] = 3;
 		msg["picture"] = getPictureString();
+		msg["ballX"] = topPositionOfBall;
+		msg["ballY"] = leftPositionOfBall;
 		conn.send(JSON.stringify(msg));
 	  	 	
 	};
