@@ -76,9 +76,6 @@ class Model(object):
         self.input_q = Queue(maxsize=self._args['queue_size'])
         self.score_q = Queue(maxsize=self._args['queue_size'])
 
-        # max number of hands we want to detect/track
-        cap_params['num_hands_detect'] = self._args['num_hands']
-
         print(self._args)
 
         # spin up workers to paralleize detection.
