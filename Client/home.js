@@ -1,5 +1,5 @@
 	var conn = null;
-	var urlConnection = 'ws://192.168.0.207:9950';
+	var urlConnection = 'ws://192.168.1.6:9950';
 
 $(document).ready(function() {
   
@@ -284,8 +284,8 @@ function sendPhoto() {
 		window.clearInterval(id1);
 		window.clearInterval(id2);
 
-		var deviation1 = Math.floor(400 * obj.player1coord + 300);
-		var deviation2 = Math.floor(400 * obj.player2coord + 300)
+		var deviation1 = Math.floor(400 * (1 - obj.player1coord) + 300);
+		var deviation2 = Math.floor(400 * (1 - obj.player2coord) + 300)
 			
 		var pos1 = positionOfPaddle1;
 		var pos2 = positionOfPaddle2;
@@ -332,7 +332,7 @@ function sendPhoto() {
 	  
 	  
 	  
-});
+};
 
 function getPictureString(){
 	
@@ -491,7 +491,7 @@ var gameLoop = window.setInterval(function show() {
 			leftSpeedOfBall = -leftSpeedOfBall;
 		} else {
 			score2++;
-			if(score1 < 9 && score2 < 9){
+			if(score1 < 90 && score2 < 90){
 				startBall(1);
 			}
 			else{
@@ -507,7 +507,7 @@ var gameLoop = window.setInterval(function show() {
 			leftSpeedOfBall = -leftSpeedOfBall
 		} else {
 			score1++;
-			if(score1 < 9 && score2 < 9){
+			if(score1 < 90 && score2 < 90){
 				startBall(0);
 			}
 			else{
