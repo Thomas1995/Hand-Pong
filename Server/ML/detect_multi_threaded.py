@@ -14,14 +14,14 @@ score_thresh = 0.2
 # Create a worker thread that loads graph and
 # does detection on images in an input queue and puts it on an output queue
 def worker(input_q, output_q, score_q, cap_params, frame_processed):
-    watch_cascade = cv2.CascadeClassifier('ML/hand.xml')
+    hand_cascade = cv2.CascadeClassifier('ML/hand.xml')
     #detection_graph, sess = detector_utils.load_inference_graph()
     #sess = tf.Session(graph=detection_graph)
     while True:
         frame = input_q.get()
         if frame is not None:
             # actual detection
-            watches = watch_cascade.detectMultiScale(frame)
+            hand = hand_cascade.detectMultiScale(frame)
             #boxes, scores = detector_utils.detect_objects(
             #    frame, detection_graph, sess)
 
@@ -29,6 +29,23 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
             #if scores[0] > score_thresh:
                 # score = cap_params['im_height'] / (cap_params['im_height'] + ((bottom + top) / 2))
             #    score = 1 - ((boxes[0][2] * cap_params['im_height'] + boxes[0][0] * cap_params['im_height']) / 2) / (cap_params['im_height'])
+
+            best_match = 0
+            best_x = -1
+            best_y = -1
+            best_w = -1
+            best_h = -1
+            for (x,y,w,h) in watches:
+                if w + h > best_match:
+                  best_match = w + h
+                  best_x = x
+                  best_y = y
+                  best_w = w
+                  best_h = h
+
+            if best_y != -1:
+              score = 1 - (best_y / img.shape[1])
+
             output_q.put(frame)
             score_q.put(score)
 
