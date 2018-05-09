@@ -298,7 +298,7 @@ function sendPhoto() {
 		window.clearInterval(id2);
 		
 		if(obj.ballX != null){
-			startBall(0);
+			//startBall(0);
 		}
 		
 		
