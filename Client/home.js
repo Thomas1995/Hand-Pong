@@ -115,10 +115,10 @@ $(document).ready(function() {
 					$("#enterGameBtn").prop("disabled",false);
 					$("#closeGameBtn").prop("disabled",false);
 
-					$("#player1Username").text(obj.player2_username);
-					$("#player1Statistics").text("Wins/Losses: " + obj.player2_win + "/" + obj.player2_loss);
-					$("#player2Username").text(obj.player1_username);
-					$("#player2Statistics").text("Wins/Losses: " + obj.player1_win + "/" + obj.player1_loss);	
+					$("#player1Username").text(obj.player1_username);
+					$("#player1Statistics").text("Wins/Losses: " + obj.player1_win + "/" + obj.player1_loss);
+					$("#player2Username").text(obj.player2_username);
+					$("#player2Statistics").text("Wins/Losses: " + obj.player2_win + "/" + obj.player2_loss);	
 					
 					$('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
 					$('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
@@ -512,8 +512,8 @@ var gameLoop = window.setInterval(function show() {
 			leftSpeedOfBall = -leftSpeedOfBall;
 		} else {
 			score2++;
-			if(score1 < 90 && score2 < 90){
-				startBall(0);
+			if(score1 < 9 && score2 < 9){
+				startBall(1);
 			}
 			else{
 				window.clearInterval(gameLoop);
@@ -528,8 +528,8 @@ var gameLoop = window.setInterval(function show() {
 			leftSpeedOfBall = -leftSpeedOfBall
 		} else {
 			score1++;
-			if(score1 < 90 && score2 < 90){
-				startBall(1);
+			if(score1 < 9 && score2 < 9){
+				startBall(0);
 			}
 			else{
 				window.clearInterval(gameLoop);
