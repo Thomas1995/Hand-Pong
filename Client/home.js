@@ -300,54 +300,61 @@ function sendPhoto() {
 			//startBall(0);
 		}
 		
-		
-		var deviation1 = Math.floor(400 * (1 - obj.player1coord) + 300);
-		var deviation2 = Math.floor(400 * (1 - obj.player2coord) + 300);
+		if(obj.status == "ENEMY_DISCONNECTED"){
 			
-		var pos1 = positionOfPaddle1;
-		var pos2 = positionOfPaddle2;
-		var id1 = setInterval(frame1, 1);
-		var id2 = setInterval(frame2, 1);
-		function frame1() {
-			if (pos1 == deviation1) {
-				window.clearInterval(id1);
-			} 
-			else {
-				//if(deviation1 > positionOfPaddle1){
-				//	pos1++; 
-				//}		
-				//else{
-				//	pos1--; 
-				//}
-				pos1 = deviation1;
-				positionOfPaddle1 = pos1; 
-			}
-		};
-			  
-		function frame2() {
-			if (pos2 == deviation2) {
-				window.clearInterval(id2);
-			} 
-			else {
-				//if(deviation2 > positionOfPaddle2){
-				//	pos2++; 
-				//}	
-				//else{
-				//	pos2--; 
-				//}
-				pos2 = deviation2;
-				positionOfPaddle2 = pos2; 
-			}
+			var target = $("#divGame");
+			removeElement(target);
+			setTimeout(function(){ location.reload(); }, 1000);
 		}
-		
-		var msg = {};
-	  
-		msg["actionType"] = 3;
-		msg["picture"] = getPictureString();
-		msg["ballY"] = topPositionOfBall;
-		msg["ballX"] = leftPositionOfBall;
-		conn.send(JSON.stringify(msg));
-	  	 	
+		else {
+					
+			var deviation1 = Math.floor(400 * (1 - obj.player1coord) + 300);
+			var deviation2 = Math.floor(400 * (1 - obj.player2coord) + 300);
+				
+			var pos1 = positionOfPaddle1;
+			var pos2 = positionOfPaddle2;
+			var id1 = setInterval(frame1, 1);
+			var id2 = setInterval(frame2, 1);
+			function frame1() {
+				if (pos1 == deviation1) {
+					window.clearInterval(id1);
+				} 
+				else {
+					//if(deviation1 > positionOfPaddle1){
+					//	pos1++; 
+					//}		
+					//else{
+					//	pos1--; 
+					//}
+					pos1 = deviation1;
+					positionOfPaddle1 = pos1; 
+				}
+			};
+				  
+			function frame2() {
+				if (pos2 == deviation2) {
+					window.clearInterval(id2);
+				} 
+				else {
+					//if(deviation2 > positionOfPaddle2){
+					//	pos2++; 
+					//}	
+					//else{
+					//	pos2--; 
+					//}
+					pos2 = deviation2;
+					positionOfPaddle2 = pos2; 
+				}
+			}
+			
+			var msg = {};
+		  
+			msg["actionType"] = 3;
+			msg["picture"] = getPictureString();
+			msg["ballY"] = topPositionOfBall;
+			msg["ballX"] = leftPositionOfBall;
+			conn.send(JSON.stringify(msg));
+	  	} 	
 	};
 	conn.send(JSON.stringify(msg));
 	  
