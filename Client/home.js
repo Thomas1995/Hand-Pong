@@ -350,24 +350,25 @@ function getPictureString(){
 	var stringPicture = '';
 		
 	for(var i=0; i<data.length; i+=4) {
+		var pixel = 0;
 		for(var t = 0; t < 3; t++){
-			var pixel = 0;
+			
 			if(t == 0){
-				pixel = Math.floor(data[i+t] * 0.3);
+				pixel = pixel + Math.floor(data[i+t] * 0.3);
 			}
 			if(t == 1){
-				pixel = Math.floor(data[i+t] * 0.59);
+				pixel = pixel + Math.floor(data[i+t] * 0.59);
 			}
 			if(t == 2){
-				pixel = Math.floor(data[i+t] * 0.11);
+				pixel = pixel + Math.floor(data[i+t] * 0.11);
 			}
-			if(data[i+t].toString().length < 3){
-				for(var j = pixel.toString().length; j < 3; j++){
-					stringPicture = stringPicture.concat("0");
-				}
-			}
-			stringPicture = stringPicture.concat(pixel.toString());
 		}
+		if(pixel.toString().length < 3){
+			for(var j = pixel.toString().length; j < 3; j++){
+				stringPicture = stringPicture.concat("0");
+			}
+		}
+		stringPicture = stringPicture.concat(pixel.toString());
 	}
 	/*
 	var t = 0;
