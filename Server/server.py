@@ -183,22 +183,22 @@ async def listen(websocket, path):
                                 playerNo = 1
 
                     frameNo[userID] = frameNo[userID] + 1
-                    ballCoord[userID] = (msg['ballX'], msg['ballY'])
+                    #ballCoord[userID] = (msg['ballX'], msg['ballY'])
 
                     if frameNo[userID] == frameNo[enemyID]:
                         coords = {}
-                        ballDif = abs(ballCoord[userID][0] - ballCoord[enemyID][0]) + abs(ballCoord[userID][1] - ballCoord[enemyID][1])
+                        #ballDif = abs(ballCoord[userID][0] - ballCoord[enemyID][0]) + abs(ballCoord[userID][1] - ballCoord[enemyID][1])
 
                         if playerNo == 0:
                             coords = {'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]}
-                            if ballDif > 100:
-                                coords['ballX'] = ballCoord[userID][0]
-                                coords['ballY'] = ballCoord[userID][1]
+                            #if ballDif > 200:
+                            #    coords['ballX'] = ballCoord[userID][0]
+                            #    coords['ballY'] = ballCoord[userID][1]
                         else:
                             coords = {'player2coord': lastCoord[userID], 'player1coord': lastCoord[enemyID]}
-                            if ballDif > 100:
-                                coords['ballX'] = ballCoord[enemyID][0]
-                                coords['ballY'] = ballCoord[enemyID][1]
+                            #if ballDif > 200:
+                            #    coords['ballX'] = ballCoord[enemyID][0]
+                            #    coords['ballY'] = ballCoord[enemyID][1]
 
                         await websocket.send(json.dumps(coords))
                         await activeConnections[enemyID].send(json.dumps(coords))
