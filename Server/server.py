@@ -13,6 +13,7 @@ PORT = 9950
 activeConnections = {}
 lastCoord = {}
 frameNo = {}
+ballCoord = {}
 readyToPlay = []
 matches = []
 dbConn = None
@@ -182,16 +183,25 @@ async def listen(websocket, path):
                                 playerNo = 1
 
                     frameNo[userID] = frameNo[userID] + 1
+                    ballCoord[userID] = (msg['ballX'], msg['ballY'])
 
                     if frameNo[userID] == frameNo[enemyID]:
-                        coords = None
-                        if playerNo == 0:
-                            coords = json.dumps({'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]})
-                        else:
-                            coords = json.dumps({'player2coord': lastCoord[userID], 'player1coord': lastCoord[enemyID]})
+                        coords = {}
+                        ballDif = abs(ballCoord[userID][0] - ballCoord[enemyID][0]) + abs(ballCoord[userID][1] - ballCoord[enemyID][1])
 
-                        await websocket.send(coords)
-                        await activeConnections[enemyID].send(coords)
+                        if playerNo == 0:
+                            coords = {'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]}
+                            if ballDif > 100:
+                                coords['ballX'] = ballCoord[userID][0]
+                                coords['ballY'] = ballCoord[userID][1]
+                        else:
+                            coords = {'player2coord': lastCoord[userID], 'player1coord': lastCoord[enemyID]}
+                            if ballDif > 100:
+                                coords['ballX'] = ballCoord[enemyID][0]
+                                coords['ballY'] = ballCoord[enemyID][1]
+
+                        await websocket.send(json.dumps(coords))
+                        await activeConnections[enemyID].send(json.dumps(coords))
 
         except:
             if userID in activeConnections:
@@ -202,6 +212,9 @@ async def listen(websocket, path):
                 del lastCoord[userID]
             if userID in frameNo:
                 del frameNo[userID]
+            if userID in ballCoord:
+                del ballCoord[userID]
+
             for m in matches:
                 if m[0] == userID or m[1] == userID:
                     enemyID = 0
