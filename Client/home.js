@@ -32,7 +32,7 @@ $(document).ready(function() {
 	$("#loginBtn").click(function() {
 		var username = $("#emailLogin").val();
 		var password = $("#passwordLogin").val();
-	  /*
+	  
 		var msg = {};
 	  
 		msg["actionType"] = 1;
@@ -58,10 +58,7 @@ $(document).ready(function() {
 			
 		};
 		conn.onopen = () => conn.send(JSON.stringify(msg));			
-	  */
-		var divLogin = $("#divLogin");
-		removeElement(divLogin);
-		setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
+	  
 	});
   
 	$("#signUpBtn").click(function() {
@@ -99,7 +96,7 @@ $(document).ready(function() {
 	});
   
 	$("#enterGameBtn").click(function() {
-	  	/*
+	  	
 		var msg = {};
 	  
 		msg["actionType"] = 2;
@@ -116,7 +113,42 @@ $(document).ready(function() {
 					removeElement(divLobby);
 					setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
 					$("#enterGameBtn").prop("disabled",false);
-					$("#closeGameBtn").prop("disabled",false);	
+					$("#closeGameBtn").prop("disabled",false);
+
+					$("#player1Username").text(obj.player1_username);
+					$("#player1Statistics").text("Wins/Losses: " + obj.player1_win + "/" + obj.player1_loss);
+					$("#player2Username").text(obj.player2_username);
+					$("#player2Statistics").text("Wins/Losses: " + obj.player2_win + "/" + obj.player2_loss);	
+					
+					$('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
+					$('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
+					$('#wall').css('left', (document.body.clientWidth / 2));
+					
+					setTimeout(function() {  	 
+						$('#wall').css('visibility', 'visible');
+						$('#paddle1').css('visibility', 'visible');
+						$('#paddle2').css('visibility', 'visible');	  
+						startBall(0);
+						sendPhoto();
+					}, 3000);
+					
+					navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
+
+					navigator.getMedia(
+        
+						{video:true, audio:false},
+
+
+						function (mediaStream) {
+							var video = document.getElementsByTagName('video')[0];
+							video.srcObject = mediaStream;
+							video.play();
+						},   
+					
+						function (error) {
+							console.log(error);
+						}
+					)
 					break;
 				case "NO_USER_ID":
 					alert("No user id");
@@ -124,25 +156,9 @@ $(document).ready(function() {
 				}
 		};
 		conn.send(JSON.stringify(msg));	
-	  */
-		hidePleaseWait();
-		var divLobby = $("#divLobby");
-		removeElement(divLobby);
-		setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
-		$("#enterGameBtn").prop("disabled",false);
-		$("#closeGameBtn").prop("disabled",false);
-
-		$('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
-		$('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
-		$('#wall').css('left', (document.body.clientWidth / 2));
-		setTimeout(function() {  	 
-			$('#wall').css('visibility', 'visible');
-			$('#paddle1').css('visibility', 'visible');
-			$('#paddle2').css('visibility', 'visible');	  
-			startBall(0);
-		}, 3000);
 	  
 	  
+	  /*
 		var generator = setInterval(function(){ 
 			console.log('Start');
 			window.clearInterval(id1);
@@ -188,23 +204,7 @@ $(document).ready(function() {
 			}
 			
 		}, 1000);
-		
-		navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
-
-		navigator.getMedia(
-        
-			{video:true, audio:false},
-
-
-			function (mediaStream) {
-				var video = document.getElementsByTagName('video')[0];
-				video.srcObject = mediaStream;
-				video.play();
-			},   
-        
-			function (error) {
-				console.log(error);
-			}) 
+		*/
 	});
   
 	$("#closeGameBtn").click(function() {
@@ -222,65 +222,6 @@ $(document).ready(function() {
 	$("#prev").click(function () {
 		updateItems(-1);
 	});
-  
-  
-
-	$("#capture").click(function () {
-		
-		var canvas = document.createElement("canvas");
-		var video = document.getElementById("video");
-		canvas.width = 300;
-		canvas.height = 300;
-		canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
- 
-		var img = document.createElement("img");
-		img.src = canvas.toDataURL();
-		//$("#output").append(img);
-		
-		var data = canvas.getContext("2d").getImageData(0, 0, 300, 300).data; 
-		var stringPicture = '';
-		
-		for(var i=0; i<data.length; i+=4) {
-			for(var t = 0; t < 3; t++){
-				if(data[i+t].toString().length < 3){
-					for(var j = data[i+t].toString().length; j < 3; j++){
-						stringPicture = stringPicture.concat("0");
-					}
-				}
-				stringPicture = stringPicture.concat(data[i+t].toString());
-			}
-		}
-		/*
-		var t = 0;
-		var myArr = [];
-		for (var i = 0; i < 277; i++){
-			myArr[i] = [];
-			for (var j = 0; j < 220; j++){
-				myArr[i][j] = [];
-				for(var k = 0; k < 3; k++){
-					myArr[i][j][k] = data.data[t];
-					t = t + 1;
-				}
-				t++;
-			}
-		}
-		*/
-	  /*		
-		var msg = {};
-	  
-		msg["actionType"] = 3;
-		msg["picture"] = stringPicture;
-	  		  
-	   
-		conn.onmessage = function(e){ 
-		console.log(e.data);
-	  	 	
-		};
-		conn.send(JSON.stringify(msg));
-	  */
-	  
-	  
-	});
 	
 	$( window ).resize(function() {
 		$('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
@@ -289,6 +230,152 @@ $(document).ready(function() {
 	});
     
 });
+
+function sendPhoto() {
+		
+	var canvas = document.createElement("canvas");
+	var video = document.getElementById("video");
+	canvas.width = 300;
+	canvas.height = 300;
+	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+ 
+	//var img = document.createElement("img");
+	//img.src = canvas.toDataURL();
+	//$("#output").append(img);
+		
+	var data = canvas.getContext("2d").getImageData(0, 0, 300, 300).data; 
+	var stringPicture = '';
+		
+	for(var i=0; i<data.length; i+=4) {
+		for(var t = 0; t < 3; t++){
+			if(data[i+t].toString().length < 3){
+				for(var j = data[i+t].toString().length; j < 3; j++){
+					stringPicture = stringPicture.concat("0");
+				}
+			}
+			stringPicture = stringPicture.concat(data[i+t].toString());
+		}
+	}
+	/*
+	var t = 0;
+	var myArr = [];
+	for (var i = 0; i < 277; i++){
+		myArr[i] = [];
+		for (var j = 0; j < 220; j++){
+			myArr[i][j] = [];
+			for(var k = 0; k < 3; k++){
+				myArr[i][j][k] = data.data[t];
+				t = t + 1;
+			}
+			t++;
+		}
+	}
+	*/
+	  		
+	var msg = {};
+	  
+	msg["actionType"] = 3;
+	msg["picture"] = getPictureString();
+	  		  
+	   
+	conn.onmessage = function(e){ 
+		var obj = JSON.parse(e.data);
+		
+		window.clearInterval(id1);
+		window.clearInterval(id2);
+
+		var deviation1 = Math.floor(400 * obj.player1coord + 300);
+		var deviation2 = Math.floor(400 * obj.player2coord + 300)
+			
+		var pos1 = positionOfPaddle1;
+		var pos2 = positionOfPaddle2;
+		var id1 = setInterval(frame1, 1);
+		var id2 = setInterval(frame2, 1);
+		function frame1() {
+			if (pos1 == deviation1) {
+				window.clearInterval(id1);
+			} 
+			else {
+				if(deviation1 > positionOfPaddle1){
+					pos1++; 
+				}		
+				else{
+					pos1--; 
+				}
+				positionOfPaddle1 = pos1; 
+			}
+		};
+			  
+		function frame2() {
+			if (pos2 == deviation2) {
+				window.clearInterval(id2);
+			} 
+			else {
+				if(deviation2 > positionOfPaddle2){
+					pos2++; 
+				}	
+				else{
+					pos2--; 
+				}
+				positionOfPaddle2 = pos2; 
+			}
+		}
+		
+		var msg = {};
+	  
+		msg["actionType"] = 3;
+		msg["picture"] = getPictureString();
+		conn.send(JSON.stringify(msg));
+	  	 	
+	};
+	conn.send(JSON.stringify(msg));
+	  
+	  
+	  
+});
+
+function getPictureString(){
+	
+	var canvas = document.createElement("canvas");
+	var video = document.getElementById("video");
+	canvas.width = 300;
+	canvas.height = 300;
+	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+ 
+	//var img = document.createElement("img");
+	//img.src = canvas.toDataURL();
+	//$("#output").append(img);
+		
+	var data = canvas.getContext("2d").getImageData(0, 0, 300, 300).data; 
+	var stringPicture = '';
+		
+	for(var i=0; i<data.length; i+=4) {
+		for(var t = 0; t < 3; t++){
+			if(data[i+t].toString().length < 3){
+				for(var j = data[i+t].toString().length; j < 3; j++){
+					stringPicture = stringPicture.concat("0");
+				}
+			}
+			stringPicture = stringPicture.concat(data[i+t].toString());
+		}
+	}
+	/*
+	var t = 0;
+	var myArr = [];
+	for (var i = 0; i < 277; i++){
+		myArr[i] = [];
+		for (var j = 0; j < 220; j++){
+			myArr[i][j] = [];
+			for(var k = 0; k < 3; k++){
+				myArr[i][j][k] = data.data[t];
+				t = t + 1;
+			}
+			t++;
+		}
+	}
+	*/
+	return stringPicture;
+}
 
 function showPleaseWait() {
 	var modalLoading = 
