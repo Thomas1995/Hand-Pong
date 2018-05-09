@@ -286,7 +286,7 @@ function sendPhoto() {
 		window.clearInterval(id1);
 		window.clearInterval(id2);
 		
-		if(obj.ballX != null
+		if(obj.ballX != null){
 			topPositionOfBall = obj.ballY;
 			leftPositionOfBall = obj.ballX;
 		}
