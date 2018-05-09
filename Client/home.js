@@ -314,12 +314,13 @@ function sendPhoto() {
 				window.clearInterval(id1);
 			} 
 			else {
-				if(deviation1 > positionOfPaddle1){
-					pos1++; 
-				}		
-				else{
-					pos1--; 
-				}
+				//if(deviation1 > positionOfPaddle1){
+				//	pos1++; 
+				//}		
+				//else{
+				//	pos1--; 
+				//}
+				pos1 = deviation1;
 				positionOfPaddle1 = pos1; 
 			}
 		};
@@ -329,12 +330,13 @@ function sendPhoto() {
 				window.clearInterval(id2);
 			} 
 			else {
-				if(deviation2 > positionOfPaddle2){
-					pos2++; 
-				}	
-				else{
-					pos2--; 
-				}
+				//if(deviation2 > positionOfPaddle2){
+				//	pos2++; 
+				//}	
+				//else{
+				//	pos2--; 
+				//}
+				pos2 = deviation2;
 				positionOfPaddle2 = pos2; 
 			}
 		}
