@@ -44,7 +44,7 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
                   best_h = h
 
             if best_y != -1:
-              score = 1 - (best_y / img.shape[1])
+              score = 1 - (best_y / frame.shape[1])
 
             output_q.put(frame)
             score_q.put(score)
