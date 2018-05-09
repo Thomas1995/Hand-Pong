@@ -21,7 +21,7 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
         frame = input_q.get()
         if frame is not None:
             # actual detection
-            hand = hand_cascade.detectMultiScale(frame)
+            hands = hand_cascade.detectMultiScale(frame)
             #boxes, scores = detector_utils.detect_objects(
             #    frame, detection_graph, sess)
 
@@ -35,7 +35,7 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
             best_y = -1
             best_w = -1
             best_h = -1
-            for (x,y,w,h) in watches:
+            for (x,y,w,h) in hands:
                 if w + h > best_match:
                   best_match = w + h
                   best_x = x
