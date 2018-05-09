@@ -1,196 +1,241 @@
-var conn = null;
-var urlConnection = 'ws://192.168.0.207:9950';
+	var conn = null;
+	var urlConnection = 'ws://192.168.0.207:9950';
 
 $(document).ready(function() {
   
-  $("#startButton").click(function() {
-	var target = $("#intro");
-    removeElement(target);
-	setTimeout(function(){ $('.divLogin').slideToggle("slow"); }, 1000);
-	setTimeout(function(){ $('html').css({'background' : 'url(2.jpg) no-repeat center center fixed',
-						   '-webkit-background-size' : 'cover',
-						   '-moz-background-size' : 'cover', 
-						   '-o-background-size' : 'cover',
-						   'background-size' : 'cover'}); 						   
-		}, 0);
+	$("#startButton").click(function() {
+		var target = $("#intro");
+		removeElement(target);
+		setTimeout(function(){ $('.divLogin').slideToggle("slow"); }, 1000);
+		setTimeout(function(){ $('html').css({
+				'background' : 'url(2.jpg) no-repeat center center fixed',
+				'-webkit-background-size' : 'cover',
+				'-moz-background-size' : 'cover', 
+				'-o-background-size' : 'cover',
+				'background-size' : 'cover'}); 						   
+	}, 0);
 	
   });
   
-  $("#SignUpOption").click(function() {	
-	setTimeout(function(){ $('.divMenuLogin').slideToggle("slow"); }, 1000);	
-	setTimeout(function(){ $('.divMenuSignUp').slideToggle("slow"); }, 2000);	
-	setTimeout(function(){ $('.divMenuSignUp').css({'display' : 'block'}); 						   
-			}, 2000);	
-  });
+	$("#SignUpOption").click(function() {	
+		setTimeout(function(){ $('.divMenuLogin').slideToggle("slow"); }, 1000);	
+		setTimeout(function(){ $('.divMenuSignUp').slideToggle("slow"); }, 2000);	
+		setTimeout(function(){ $('.divMenuSignUp').css({'display' : 'block'});}, 2000);	
+	});
 
-  $("#LoginOption").click(function() {
-	setTimeout(function(){ $('.divMenuSignUp').slideToggle("slow"); }, 1000);	
-	setTimeout(function(){ $('.divMenuLogin').slideToggle("slow"); }, 2000);	
-	setTimeout(function(){ $('.divMenuLogin').css({'display' : 'block'}); 						   
-			}, 2000);	
-  });
+	$("#LoginOption").click(function() {
+		setTimeout(function(){ $('.divMenuSignUp').slideToggle("slow"); }, 1000);	
+		setTimeout(function(){ $('.divMenuLogin').slideToggle("slow"); }, 2000);	
+		setTimeout(function(){ $('.divMenuLogin').css({'display' : 'block'});}, 2000);	
+	});
   
-  $("#loginBtn").click(function() {
-	  var username = $("#emailLogin").val();
-	  var password = $("#passwordLogin").val();
+	$("#loginBtn").click(function() {
+		var username = $("#emailLogin").val();
+		var password = $("#passwordLogin").val();
 	  /*
-	  var msg = {};
+		var msg = {};
 	  
-	  msg["actionType"] = 1;
-	  msg["username"] = username;
-	  msg["password"] = password;
+		msg["actionType"] = 1;
+		msg["username"] = username;
+		msg["password"] = password;
 	 
 	  
-	  conn = new WebSocket(urlConnection);
-	  conn.onmessage = function(e){ 
-	  var obj = JSON.parse(e.data);
-	  if(obj.status == 'OK'){
-		  var divLogin = $("#divLogin");
-		  removeElement(divLogin);
-		  $("#usernameLobby").text(obj.username);
-		  $("#emailLobby").text(obj.email);
-		  $("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
-		  setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
-	  }
-	  else{
-		  alert('Login fail');
-	  }
-	  
-		
-	  };
-	  conn.onopen = () => conn.send(JSON.stringify(msg));			
+		conn = new WebSocket(urlConnection);
+		conn.onmessage = function(e){ 
+			var obj = JSON.parse(e.data);
+			if(obj.status == 'OK'){
+				var divLogin = $("#divLogin");
+				removeElement(divLogin);
+				$("#usernameLobby").text(obj.username);
+				$("#emailLobby").text(obj.email);
+				$("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
+				setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
+			}
+			else{
+				alert('Login fail');
+			}
+		  
+			
+		};
+		conn.onopen = () => conn.send(JSON.stringify(msg));			
 	  */
-	  var divLogin = $("#divLogin");
-		  removeElement(divLogin);
-		  setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
-  });
+		var divLogin = $("#divLogin");
+		removeElement(divLogin);
+		setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
+	});
   
-  $("#signUpBtn").click(function() {
-	  var username = $("#nameSignUp").val();
-	  var email = $("#emailSignUp").val();
-	  var password = $("#passwordSignUp").val();
+	$("#signUpBtn").click(function() {
+		var username = $("#nameSignUp").val();
+		var email = $("#emailSignUp").val();
+		var password = $("#passwordSignUp").val();
 	  
-	  var msg = {};
+		var msg = {};
 	  
-	  msg["actionType"] = 0;
-	  msg["username"] = username;
-	  msg["password"] = password;
-	  msg["email"] = email;
+		msg["actionType"] = 0;
+		msg["username"] = username;
+		msg["password"] = password;
+		msg["email"] = email;
 	  	 
 	 
-	  conn = new WebSocket(urlConnection);
-	  conn.onmessage = function(e){ 
-	  var obj = JSON.parse(e.data);
-	  if(obj.status == 'OK'){
-		  var divLogin = $("#divLogin");
-		  removeElement(divLogin);
-		  $("#usernameLobby").text(obj.username);
-		  $("#emailLobby").text(obj.email);
-		  $("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
-		  setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
-	  }
-	  else{
-		  alert('Sign up fail');
-	  }
-	  
-		
-	  };
-	  conn.onopen = () => conn.send(JSON.stringify(msg));			
+		conn = new WebSocket(urlConnection);
+		conn.onmessage = function(e){ 
+			var obj = JSON.parse(e.data);
+			if(obj.status == 'OK'){
+				var divLogin = $("#divLogin");
+				removeElement(divLogin);
+				$("#usernameLobby").text(obj.username);
+				$("#emailLobby").text(obj.email);
+				$("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
+				setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
+			}
+			else{
+				alert('Sign up fail');
+			}		
+		};
+		conn.onopen = () => conn.send(JSON.stringify(msg));			
 
 	  
 	  
-  });
+	});
   
-  $("#enterGameBtn").click(function() {
+	$("#enterGameBtn").click(function() {
 	  	/*
-	  var msg = {};
+		var msg = {};
 	  
-	  msg["actionType"] = 2;
-	  showPleaseWait();
-	  $("#enterGameBtn").prop("disabled",true);
-	  $("#closeGameBtn").prop("disabled",true);		  
+		msg["actionType"] = 2;
+		showPleaseWait();
+		$("#enterGameBtn").prop("disabled",true);
+		$("#closeGameBtn").prop("disabled",true);		  
 	   
-	  conn.onmessage = function(e){ 
-	  var obj = JSON.parse(e.data);
-	  switch (obj.status) {
-			case "OK":
-				  hidePleaseWait();
-				  var divLobby = $("#divLobby");
-				  removeElement(divLobby);
-				  setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
-				  $("#enterGameBtn").prop("disabled",false);
-				  $("#closeGameBtn").prop("disabled",false);	
-				break;
-			case "NO_USER_ID":
-				alert("No user id");
-				break;	
-			
-		}
-	 	
-	  };
-	  conn.send(JSON.stringify(msg));	
+		conn.onmessage = function(e){ 
+			var obj = JSON.parse(e.data);
+			switch (obj.status) {
+				case "OK":
+					hidePleaseWait();
+					var divLobby = $("#divLobby");
+					removeElement(divLobby);
+					setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
+					$("#enterGameBtn").prop("disabled",false);
+					$("#closeGameBtn").prop("disabled",false);	
+					break;
+				case "NO_USER_ID":
+					alert("No user id");
+					break;	
+				}
+		};
+		conn.send(JSON.stringify(msg));	
 	  */
-	  hidePleaseWait();
-				  var divLobby = $("#divLobby");
-				  removeElement(divLobby);
-				  setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
-				  $("#enterGameBtn").prop("disabled",false);
-				  $("#closeGameBtn").prop("disabled",false);
+		hidePleaseWait();
+		var divLobby = $("#divLobby");
+		removeElement(divLobby);
+		setTimeout(function(){ $('.divGame').slideToggle("slow"); }, 1000);
+		$("#enterGameBtn").prop("disabled",false);
+		$("#closeGameBtn").prop("disabled",false);
 
-	  $('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
-	  $('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
-	  $('#wall').css('left', (document.body.clientWidth / 2));	  
-	  setTimeout(function() {
-		startBall(0);
-	  }, 2000);
-  });
+		$('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
+		$('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
+		$('#wall').css('left', (document.body.clientWidth / 2));
+		setTimeout(function() {  	 
+			$('#wall').css('visibility', 'visible');
+			$('#paddle1').css('visibility', 'visible');
+			$('#paddle2').css('visibility', 'visible');	  
+			startBall(0);
+		}, 3000);
+	  
+	  
+		var generator = setInterval(function(){ 
+			console.log('Start');
+			window.clearInterval(id1);
+			window.clearInterval(id2);
+			var player1 = Math.random();
+			var player2 = Math.random();
+			var deviation1 = Math.floor(400 * player1 + 300);
+			var deviation2 = Math.floor(400 * player2 + 300)
+			console.log(deviation1 + ' ' + positionOfPaddle1);
+			
+			var pos1 = positionOfPaddle1;
+			var pos2 = positionOfPaddle2;
+			var id1 = setInterval(frame1, 1);
+			var id2 = setInterval(frame2, 1);
+			function frame1() {
+				if (pos1 == deviation1) {
+					window.clearInterval(id1);
+				} 
+				else {
+					if(deviation1 > positionOfPaddle1){
+						pos1++; 
+					}		
+					else{
+						pos1--; 
+					}
+					positionOfPaddle1 = pos1; 
+				}
+			};
+			  
+			function frame2() {
+				if (pos2 == deviation2) {
+					window.clearInterval(id2);
+				} 
+				else {
+					if(deviation2 > positionOfPaddle2){
+						pos2++; 
+					}	
+					else{
+						pos2--; 
+					}
+					positionOfPaddle2 = pos2; 
+				}
+			}
+			
+		}, 1000);
+		
+		navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
+
+		navigator.getMedia(
+        
+			{video:true, audio:false},
+
+
+			function (mediaStream) {
+				var video = document.getElementsByTagName('video')[0];
+				video.srcObject = mediaStream;
+				video.play();
+			},   
+        
+			function (error) {
+				console.log(error);
+			}) 
+	});
   
-  $("#closeGameBtn").click(function() {
+	$("#closeGameBtn").click(function() {
 	  	
-	  conn.close();
-	  removeElement(divLobby);
-	  setTimeout(function(){ $('.divLogin').slideToggle("slow"); }, 1000);
+		conn.close();
+		removeElement(divLobby);
+		setTimeout(function(){ $('.divLogin').slideToggle("slow"); }, 1000);
 	  	  
-  });
+	});
   
-  $("#next").click(function () {
-	  updateItems(1);
-  });
+	$("#next").click(function () {
+		updateItems(1);
+	});
   
-  $("#prev").click(function () {
-	  updateItems(-1);
-  });
+	$("#prev").click(function () {
+		updateItems(-1);
+	});
   
   
-    navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
-
-    navigator.getMedia(
-        // constraints
-        {video:true, audio:false},
-
-        // success callback
-        function (mediaStream) {
-            var video = document.getElementsByTagName('video')[0];
-            video.srcObject = mediaStream;
-            video.play();
-        },   
-        //handle error
-        function (error) {
-            console.log(error);
-        }) 
 
 	$("#capture").click(function () {
 		
-	  var canvas = document.createElement("canvas");
-	  var video = document.getElementById("video");
-        canvas.width = 300;
-        canvas.height = 300;
-        canvas.getContext('2d')
-              .drawImage(video, 0, 0, canvas.width, canvas.height);
+		var canvas = document.createElement("canvas");
+		var video = document.getElementById("video");
+		canvas.width = 300;
+		canvas.height = 300;
+		canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
  
-        var img = document.createElement("img");
-        img.src = canvas.toDataURL();
-        //$("#output").append(img);
+		var img = document.createElement("img");
+		img.src = canvas.toDataURL();
+		//$("#output").append(img);
 		
 		var data = canvas.getContext("2d").getImageData(0, 0, 300, 300).data; 
 		var stringPicture = '';
@@ -221,94 +266,88 @@ $(document).ready(function() {
 		}
 		*/
 	  /*		
-	  var msg = {};
+		var msg = {};
 	  
-	  msg["actionType"] = 3;
-	  msg["picture"] = stringPicture;
+		msg["actionType"] = 3;
+		msg["picture"] = stringPicture;
 	  		  
 	   
-	  conn.onmessage = function(e){ 
-	  console.log(e.data);
+		conn.onmessage = function(e){ 
+		console.log(e.data);
 	  	 	
-	  };
-	  conn.send(JSON.stringify(msg));
+		};
+		conn.send(JSON.stringify(msg));
 	  */
 	  
 	  
 	});
 	
 	$( window ).resize(function() {
-	  $('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
-	  $('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
+		$('#paddle1').css('left', (document.body.clientWidth / 2) - (955 / 2) + 30);			  
+		$('#paddle2').css('left', (document.body.clientWidth / 2) + (955 / 2) - 23);
+		$('#wall').css('left', (document.body.clientWidth / 2));
 	});
     
 });
 
 function showPleaseWait() {
-    var modalLoading = '<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false role="dialog">\
-        <div class="modal-dialog">\
-            <div class="modal-content">\
-                <div class="modal-header">\
-                    <h1 class="modal-title">Loading...</h1>\
-                </div>\
-                <div class="modal-body">\
-					<div><h4 class="modal-title">Please wait for another player to connect.</h4></div>\
-					<div id="loader" class="loader"></div>\
-                </div>\
-            </div>\
-        </div>\
-    </div>';
-    $(document.body).append(modalLoading);
+	var modalLoading = 
+		'<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false role="dialog">\
+			<div class="modal-dialog">\
+				<div class="modal-content">\
+					<div class="modal-header">\
+						<h1 class="modal-title">Loading...</h1>\
+					</div>\
+					<div class="modal-body">\
+						<div>\
+							<h4 class="modal-title">Please wait for another player to connect.</h4>\
+						</div>\
+						<div id="loader" class="loader">\
+						</div>\
+					</div>\
+				</div>\
+			</div>\
+		</div>';
+	$(document.body).append(modalLoading);
 }
 
 function hidePleaseWait() {
-    $("#pleaseWaitDialog").remove();
+	$("#pleaseWaitDialog").remove();
 }
 
 function removeElement(target) {
-  target.animate({
-    opacity: "-=1"
-  }, 1000, function() {
-    target.remove();
-  });
+	target.animate({
+		opacity: "-=1"
+		}, 1000, function() {
+		target.remove();
+	});
 }
 
 function dissapearElement(target) {
-  target.animate({
-    opacity: "-=1"
-  }, 1000, function() {
-    target.css({'display' : 'none'});
-  });
+	target.animate({
+		opacity: "-=1"
+	}, 1000, function() {
+		target.css({'display' : 'none'});
+	});
 }
 
-function updateItems(delta)
-{
-    var $items = $('#group').children();
-    var $current = $items.filter('.current');
-    var index = $current.index();
-    var newIndex = index+delta;
-    // Range check the new index
-    newIndex = (newIndex < 0) ? 0 : ((newIndex > $items.length) ? $items.length : newIndex); 
-    if (newIndex != index){
-        $current.removeClass('current');
-        $current = $items.eq(newIndex).addClass('current');
-        // Hide/show the next/prev
-        $("#prev").toggle(!$current.is($items.first()));    
-        $("#next").toggle(!$current.is($items.last()));    
+function updateItems(delta) {
+	var $items = $('#group').children();
+	var $current = $items.filter('.current');
+	var index = $current.index();
+	var newIndex = index+delta;
+	// Range check the new index
+	newIndex = (newIndex < 0) ? 0 : ((newIndex > $items.length) ? $items.length : newIndex); 
+	if (newIndex != index){
+		$current.removeClass('current');
+		$current = $items.eq(newIndex).addClass('current');
+		// Hide/show the next/prev
+		$("#prev").toggle(!$current.is($items.first()));    
+		$("#next").toggle(!$current.is($items.last()));    
     }
 }
 
 
-setInterval(function(){ 
-	speedOfPaddle1 = 0.3;
-}, 3000);
-setInterval(function(){ 
-	speedOfPaddle1 = 0;
-}, 5000);
-//var height = $('#idDiv').height();
-//var width = $('#idDiv').width()
-//var top = $('#idDiv').offset().top;
-//var left = $('#idDiv').offset().left;
 var paddleHeight = 120;
 var paddleWidth = 10;
 var ballRadius = 15;
@@ -323,6 +362,7 @@ var topSpeedOfBall = 0;
 var leftSpeedOfBall = 0;
 var score1 = 0;
 var score2 = 0;
+
 function startBall(x) {
 	topPositionOfBall = (score1 + score2)/18 * 400 + 300;
 	if (x < 0.5) {
@@ -332,41 +372,12 @@ function startBall(x) {
 		var side = -1;
 		leftPositionOfBall = (document.body.clientWidth / 2) + (955 / 2) - 50;
 	}
+	$('#ball').css('visibility', 'visible');
 	topSpeedOfBall = 3;
 	leftSpeedOfBall = side * 3;
 };
 
-document.addEventListener('keydown', function (e) {
-     if (e.keyCode == 87 || e.which == 87) { // W key
-      speedOfPaddle1 = -10;
-     }
-     if (e.keyCode == 83 || e.which == 83) { // S Key
-      speedOfPaddle1 = 10;
-     }
-     if (e.keyCode == 38 || e.which == 38) { // up arrow
-      speedOfPaddle2 = -10;
-     }
-     if (e.keyCode == 40 || e.which == 40) { // down arrow
-      speedOfPaddle2 = 10;
-     }
-}, false);
-document.addEventListener('keyup', function (e) {
-	if (e.keyCode == 87 || e.which == 87) {
-		speedOfPaddle1 = 0;
-	}
-	if (e.keyCode == 83 || e.which == 83) {
-		speedOfPaddle1 = 0;
-	}
-	if (e.keyCode == 38 || e.which == 38) {
-		speedOfPaddle2 = 0;
-	}
-	if (e.keyCode == 40 || e.which == 40) {
-		speedOfPaddle2 = 0;
-	}
-}, false);
-function print() {
-	console.log(positionOfPaddle1);
-}
+
 var gameLoop = window.setInterval(function show() {
 	positionOfPaddle1 += speedOfPaddle1;
 	positionOfPaddle2 += speedOfPaddle2;
@@ -397,8 +408,8 @@ var gameLoop = window.setInterval(function show() {
 				startBall(1);
 			}
 			else{
-				alert("gata");
 				window.clearInterval(gameLoop);
+				$('#ball').css('visibility', 'hidden');  
 			}
 			
 		}
@@ -413,8 +424,8 @@ var gameLoop = window.setInterval(function show() {
 				startBall(0);
 			}
 			else{
-				alert("gata");
 				window.clearInterval(gameLoop);
+				$('#ball').css('visibility', 'hidden');  
 			}
 			
 		}

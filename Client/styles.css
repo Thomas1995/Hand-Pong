@@ -1,9 +1,9 @@
 html {
-    background: url(1.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+	background: url(1.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 
 }
 
@@ -29,16 +29,16 @@ html {
 .buttonStart {
 	border-radius: 12px;
 	background-color: transparent;
-    background-repeat:no-repeat;
-    border-color: white;
-    color: white;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-    cursor: pointer;
+	background-repeat:no-repeat;
+	border-color: white;
+	color: white;
+	padding: 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 20px;
+	margin: 4px 2px;
+	cursor: pointer;
 	margin-top:60px;
 	margin-left:320px;
 }
@@ -47,7 +47,7 @@ html {
 	width: 500px;
 	height: 570px;
 	border-style: solid;
-    border-width: 2px;
+	border-width: 2px;
 	border-radius: 12px;
 	border-color:white;
 	margin-top:170px;
@@ -58,7 +58,7 @@ html {
 .divLogin{
 	margin: auto;
 	margin-top:190px;
-    width: 1150px;
+	width: 1150px;
 	height:600px;
 	display:none;
 	background-color:white;
@@ -114,16 +114,16 @@ html {
 .buttonLogin {
 	border-radius: 12px;
 	background-color: rgb(134,111,97);
-    background-repeat:no-repeat;
-    border-color: rgb(134,111,97);
-    color: white;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-    cursor: pointer;
+	background-repeat:no-repeat;
+	border-color: rgb(134,111,97);
+	color: white;
+	padding: 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 20px;
+	margin: 4px 2px;
+	cursor: pointer;
 	margin-top:60px;
 	margin-left:170px;
 	margin-bottom:70px;
@@ -159,16 +159,16 @@ html {
 .buttonSignUp {
 	border-radius: 12px;
 	background-color: rgb(134,111,97);
-    background-repeat:no-repeat;
-    border-color: rgb(134,111,97);
-    color: white;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    margin: 4px 2px;
-    cursor: pointer;
+	background-repeat:no-repeat;
+	border-color: rgb(134,111,97);
+	color: white;
+	padding: 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 20px;
+	margin: 4px 2px;
+	cursor: pointer;
 	margin-top:40px;
 	margin-left:170px;
 	margin-bottom:40px;
@@ -182,7 +182,7 @@ html {
 .divLobby{
 	margin: auto;
 	margin-top:190px;
-    width: 1000px;
+	width: 1000px;
 	height:600px;
 	display:none;
 	background-color:rgb(134,111,97);
@@ -277,24 +277,24 @@ html {
 }
 
 #group div{
-    display: none;
+	display: none;
 }
 #group div.current{
-    display: block;
+	display: block;
 }
 
 .buttonEnterGame{
 	border-radius: 12px;
 	background-color: transparent;
-    background-repeat:no-repeat;
-    border-color: white;
-    color: white;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    cursor: pointer;
+	background-repeat:no-repeat;
+	border-color: white;
+	color: white;
+	padding: 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 20px;
+	cursor: pointer;
 	width:150px;
 	margin-left:30px;
 }
@@ -302,15 +302,15 @@ html {
 .buttonQuitGame{
 	border-radius: 12px;
 	background-color: white;
-    background-repeat:no-repeat;
-    border-color: white;
-    color: rgb(134,111,97);
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    cursor: pointer;
+	background-repeat:no-repeat;
+	border-color: white;
+	color: rgb(134,111,97);
+	padding: 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 20px;
+	cursor: pointer;
 	width:150px;
 	margin-left:20px;
 }
@@ -339,30 +339,30 @@ html {
 }
 
 .loader {
-  border: 10px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 10px solid rgb(134,111,97);
-  width: 60px;
-  height: 60px;
-  margin:auto;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
+	border: 10px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 10px solid rgb(134,111,97);
+	width: 60px;
+	height: 60px;
+	margin:auto;
+	-webkit-animation: spin 2s linear infinite; /* Safari */
+	animation: spin 2s linear infinite;
 }
 
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
 
 .divGame{
 	margin: auto;
 	margin-top:170px;
-    width: 1000px;
+	width: 1000px;
 	height:620px;
 	display:none;
 	background-color:white;
@@ -459,4 +459,48 @@ html {
 	width:100%;
 	overflow: auto
 	
+}
+
+.paddle1{
+	visibility:hidden;
+	position:absolute;
+	left:12px;
+	top:460px;
+	width:10px;
+	height:110px;
+	background-color:white;
+}
+
+.paddle2{
+	visibility:hidden;
+	position:absolute;
+	left:950px;
+	top:460px;
+	width:10px;
+	height:110px;
+	background-color:white;
+}
+
+.wall{
+	visibility:hidden;
+	position:absolute;
+	left:12px;
+	top:290px;
+	width:0px;
+	height:460px;
+	border-style: dashed;
+	border-color:white;
+	border-width:10px;
+	padding-top:5px;
+}
+
+.ball{
+	visibility:hidden;
+	position:absolute;
+	left:820px;
+	top:510px;
+	width:15px;
+	height:15px;
+	background-color:white;
+	border-radius:50%;
 }
