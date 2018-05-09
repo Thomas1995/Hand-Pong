@@ -235,15 +235,15 @@ function sendPhoto() {
 		
 	var canvas = document.createElement("canvas");
 	var video = document.getElementById("video");
-	canvas.width = 300;
-	canvas.height = 300;
+	canvas.width = 200;
+	canvas.height = 200;
 	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
  
 	//var img = document.createElement("img");
 	//img.src = canvas.toDataURL();
 	//$("#output").append(img);
 		
-	var data = canvas.getContext("2d").getImageData(0, 0, 300, 300).data; 
+	var data = canvas.getContext("2d").getImageData(0, 0, 200, 200).data; 
 	var stringPicture = '';
 		
 	for(var i=0; i<data.length; i+=4) {
@@ -287,12 +287,12 @@ function sendPhoto() {
 		window.clearInterval(id2);
 		
 		if(obj.ballX != null){
-			startBall(0);
+			//startBall(0);
 		}
 		
 		
 		var deviation1 = Math.floor(400 * (1 - obj.player1coord) + 300);
-		var deviation2 = Math.floor(400 * (1 - obj.player2coord) + 300)
+		var deviation2 = Math.floor(400 * (1 - obj.player2coord) + 300);
 			
 		var pos1 = positionOfPaddle1;
 		var pos2 = positionOfPaddle2;
