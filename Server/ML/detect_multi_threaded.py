@@ -21,7 +21,7 @@ def worker(input_q, output_q, score_q, cap_params, frame_processed):
         frame = input_q.get()
         if frame is not None:
             # actual detection
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             hands = hand_cascade.detectMultiScale(frame)
             #boxes, scores = detector_utils.detect_objects(
             #    frame, detection_graph, sess)

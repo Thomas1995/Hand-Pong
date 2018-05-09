@@ -169,20 +169,28 @@ async def listen(websocket, path):
                     coord = model.inference_frame(picture)
                     if coord != -1:
                         lastCoord[userID] = coord
+                        print('AM DETECTAT MANA LUI ' + str(userID) + ' la ' + str(coord))
 
                     enemyID = 0
+                    playerNo = -1
                     for m in matches:
                         if m[0] == userID or m[1] == userID:
                             if m[0] == userID:
                                 enemyID = m[1]
+                                playerNo = 0
                             else:
                                 enemyID = m[0]
+                                playerNo = 1
 
                     frameNo[userID] = frameNo[userID] + 1
 
                     if frameNo[userID] == frameNo[enemyID]:
-                        coords = json.dumps({'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]})
-                        print({'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]})
+                        coords = None
+                        if playerNo == 0:
+                            coords = json.dumps({'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]})
+                        else:
+                            coords = json.dumps({'player2coord': lastCoord[userID], 'player1coord': lastCoord[enemyID]})
+
                         await websocket.send(coords)
                         await activeConnections[enemyID].send(coords)
 
