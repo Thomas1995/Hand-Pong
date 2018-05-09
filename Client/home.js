@@ -338,15 +338,15 @@ function getPictureString(){
 	
 	var canvas = document.createElement("canvas");
 	var video = document.getElementById("video");
-	canvas.width = 100;
-	canvas.height = 100;
+	canvas.width = 200;
+	canvas.height = 200;
 	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
  
 	//var img = document.createElement("img");
 	//img.src = canvas.toDataURL();
 	//$("#output").append(img);
 		
-	var data = canvas.getContext("2d").getImageData(0, 0, 100, 100).data; 
+	var data = canvas.getContext("2d").getImageData(0, 0, 200, 200).data; 
 	var stringPicture = '';
 		
 	for(var i=0; i<data.length; i+=4) {
