@@ -351,12 +351,22 @@ function getPictureString(){
 		
 	for(var i=0; i<data.length; i+=4) {
 		for(var t = 0; t < 3; t++){
+			var pixel = 0;
+			if(t == 0){
+				pixel = Math.floor(data[i+t] * 0.3);
+			}
+			if(t == 1){
+				pixel = Math.floor(data[i+t] * 0.59);
+			}
+			if(t == 2){
+				pixel = Math.floor(data[i+t] * 0.11);
+			}
 			if(data[i+t].toString().length < 3){
-				for(var j = data[i+t].toString().length; j < 3; j++){
+				for(var j = pixel.toString().length; j < 3; j++){
 					stringPicture = stringPicture.concat("0");
 				}
 			}
-			stringPicture = stringPicture.concat(data[i+t].toString());
+			stringPicture = stringPicture.concat(pixel.toString());
 		}
 	}
 	/*
