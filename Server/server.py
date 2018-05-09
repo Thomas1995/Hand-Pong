@@ -86,7 +86,7 @@ def getUserData(userID):
 
 async def listen(websocket, path):
     userID = 0
-    picture = np.zeros((100, 100, 3), dtype=np.uint8)
+    picture = np.zeros((200, 200, 3), dtype=np.uint8)
 
     while 1:
         ret = ""
@@ -160,10 +160,10 @@ async def listen(websocket, path):
                     await websocket.send(json.dumps(resp))
                 else:
                     cnt = 0
-                    for i in range(0, 100):
-                        for j in range(0, 100):
+                    for i in range(0, 200):
+                        for j in range(0, 200):
                             for k in range(0, 3):
-                                picture[i][j][k] = int(msg['picture'][cnt:(cnt+3)])
+                                picture[i][j][2-k] = int(msg['picture'][cnt:(cnt+3)])
                                 cnt = cnt + 3
 
                     coord = model.inference_frame(picture)
