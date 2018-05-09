@@ -109,9 +109,6 @@ class Model(object):
             self.start_time = datetime.datetime.now()
 
         # frame = cv2.flip(frame, 1)
-        cv2.imshow('image', frame)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
         self.index += 1
 
         self.input_q.put(frame)
