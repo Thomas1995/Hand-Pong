@@ -12,8 +12,6 @@ on your webcam (move hand up or down to move the pallet)
 1. Install
 2. Play
 
-##### Thanks to
+##### References
 * Big thanks to [victordibia](https://github.com/victordibia "GitHub profile") for his project about [hand tracking](https://github.com/victordibia/handtracking)
-
-
-
+* [hand tracking](https://github.com/heppu/Hand-recognition)
