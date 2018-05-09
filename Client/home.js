@@ -206,13 +206,12 @@ $(document).ready(function() {
 		}, 1000);
 		*/
 	});
-  
+	
 	$("#closeGameBtn").click(function() {
-	  	
-		conn.close();
+	  	conn.close();
+		var divLobby = $("#divLobby");
 		removeElement(divLobby);
-		setTimeout(function(){ $('.divLogin').slideToggle("slow"); }, 1000);
-	  	  
+		setTimeout(function(){ location.reload(); }, 1000);	  	  
 	});
   
 	$("#next").click(function () {
