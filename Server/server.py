@@ -12,6 +12,7 @@ PORT = 9950
 
 activeConnections = {}
 lastCoord = {}
+frameNo = {}
 readyToPlay = []
 matches = []
 dbConn = None
@@ -145,13 +146,12 @@ async def listen(websocket, path):
                         resp['player2_win'] = player2data['win']
                         resp['player2_loss'] = player2data['loss']
 
-                        lastCoord[userID] = 0.5;
-                        lastCoord[enemyID] = 0.5;
+                        lastCoord[userID] = 0.5
+                        lastCoord[enemyID] = 0.5
+                        frameNo[userID] = 0
+                        frameNo[enemyID] = 0
 
-                        resp['player'] = 1
                         await websocket.send(json.dumps(resp))
-
-                        resp['player'] = 2
                         await activeConnections[enemyID].send(json.dumps(resp))
 
             if(msg['actionType'] == 3):
@@ -178,7 +178,13 @@ async def listen(websocket, path):
                             else:
                                 enemyID = m[0]
 
-                    await websocket.send(json.dumps({'player1coord': coord, 'player2coord': lastCoord[enemyID]}))
+                    frameNo[userID] = frameNo[userID] + 1
+
+                    if frameNo[userID] == frameNo[enemyID]:
+                        coords = json.dumps({'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]})
+                        print({'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]})
+                        await websocket.send(coords)
+                        await activeConnections[enemyID].send(coords)
 
         except:
             if userID in activeConnections:
@@ -187,6 +193,8 @@ async def listen(websocket, path):
                 readyToPlay.remove(userID)
             if userID in lastCoord:
                 del lastCoord[userID]
+            if userID in frameNo:
+                del frameNo[userID]
             for m in matches:
                 if m[0] == userID or m[1] == userID:
                     enemyID = 0

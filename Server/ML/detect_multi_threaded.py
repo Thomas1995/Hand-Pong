@@ -6,7 +6,7 @@ import time
 import tensorflow as tf
 
 from multiprocessing import Queue, Pool
-from ML.utils import detector_utils as detector_utils
+#from ML.utils import detector_utils as detector_utils
 
 frame_processed = 0
 score_thresh = 0.2
@@ -14,19 +14,21 @@ score_thresh = 0.2
 # Create a worker thread that loads graph and
 # does detection on images in an input queue and puts it on an output queue
 def worker(input_q, output_q, score_q, cap_params, frame_processed):
-    detection_graph, sess = detector_utils.load_inference_graph()
-    sess = tf.Session(graph=detection_graph)
+    watch_cascade = cv2.CascadeClassifier('ML/hand.xml')
+    #detection_graph, sess = detector_utils.load_inference_graph()
+    #sess = tf.Session(graph=detection_graph)
     while True:
         frame = input_q.get()
         if frame is not None:
             # actual detection
-            boxes, scores = detector_utils.detect_objects(
-                frame, detection_graph, sess)
+            watches = watch_cascade.detectMultiScale(frame)
+            #boxes, scores = detector_utils.detect_objects(
+            #    frame, detection_graph, sess)
 
             score = -1
-            if scores[0] > score_thresh:
+            #if scores[0] > score_thresh:
                 # score = cap_params['im_height'] / (cap_params['im_height'] + ((bottom + top) / 2))
-                score = 1 - ((boxes[0][2] * cap_params['im_height'] + boxes[0][0] * cap_params['im_height']) / 2) / (cap_params['im_height'])
+            #    score = 1 - ((boxes[0][2] * cap_params['im_height'] + boxes[0][0] * cap_params['im_height']) / 2) / (cap_params['im_height'])
             output_q.put(frame)
             score_q.put(score)
 
