@@ -286,8 +286,11 @@ function sendPhoto() {
 		window.clearInterval(id1);
 		window.clearInterval(id2);
 		
-		topPositionOfBall = obj.ballX;
-		leftPositionOfBall = obj.ballY;
+		if(obj.ballX != null
+			topPositionOfBall = obj.ballY;
+			leftPositionOfBall = obj.ballX;
+		}
+		
 		
 		var deviation1 = Math.floor(400 * (1 - obj.player1coord) + 300);
 		var deviation2 = Math.floor(400 * (1 - obj.player2coord) + 300)
@@ -330,8 +333,8 @@ function sendPhoto() {
 	  
 		msg["actionType"] = 3;
 		msg["picture"] = getPictureString();
-		msg["ballX"] = topPositionOfBall;
-		msg["ballY"] = leftPositionOfBall;
+		msg["ballY"] = topPositionOfBall;
+		msg["ballX"] = leftPositionOfBall;
 		conn.send(JSON.stringify(msg));
 	  	 	
 	};
@@ -510,7 +513,7 @@ var gameLoop = window.setInterval(function show() {
 		} else {
 			score2++;
 			if(score1 < 90 && score2 < 90){
-				startBall(1);
+				startBall(0);
 			}
 			else{
 				window.clearInterval(gameLoop);
@@ -526,7 +529,7 @@ var gameLoop = window.setInterval(function show() {
 		} else {
 			score1++;
 			if(score1 < 90 && score2 < 90){
-				startBall(0);
+				startBall(1);
 			}
 			else{
 				window.clearInterval(gameLoop);
