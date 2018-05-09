@@ -11,6 +11,7 @@ ADDRESS = 'localhost'
 PORT = 9950
 
 activeConnections = {}
+lastCoord = {}
 readyToPlay = []
 matches = []
 dbConn = None
@@ -133,7 +134,24 @@ async def listen(websocket, path):
                         print("User-ul " + str(userID) + " va juca impotriva lui " + str(enemyID))
                         matches.append((userID, enemyID))
                         resp['status'] = STATUS_OK
+
+                        player1data = getUserData(userID)
+                        player2data = getUserData(enemyID)
+
+                        resp['player1_username'] = player1data['username']
+                        resp['player1_win'] = player1data['win']
+                        resp['player1_loss'] = player1data['loss']
+                        resp['player2_username'] = player2data['username']
+                        resp['player2_win'] = player2data['win']
+                        resp['player2_loss'] = player2data['loss']
+
+                        lastCoord[userID] = 0.5;
+                        lastCoord[enemyID] = 0.5;
+
+                        resp['player'] = 1
                         await websocket.send(json.dumps(resp))
+
+                        resp['player'] = 2
                         await activeConnections[enemyID].send(json.dumps(resp))
 
             if(msg['actionType'] == 3):
@@ -145,19 +163,33 @@ async def listen(websocket, path):
                     for i in range(0, 300):
                         for j in range(0, 300):
                             for k in range(0, 3):
-                                picture[i][j][2-k] = int(msg['picture'][cnt:(cnt+3)])
+                                picture[i][j][k] = int(msg['picture'][cnt:(cnt+3)])
                                 cnt = cnt + 3
 
-                    print(model.inference_frame(picture))
+                    coord = model.inference_frame(picture)
+                    if coord != -1:
+                        lastCoord[userID] = coord
+
+                    enemyID = 0
+                    for m in matches:
+                        if m[0] == userID or m[1] == userID:
+                            if m[0] == userID:
+                                enemyID = m[1]
+                            else:
+                                enemyID = m[0]
+
+                    await websocket.send(json.dumps({'player1coord': coord, 'player2coord': lastCoord[enemyID]}))
 
         except:
             if userID in activeConnections:
                 del activeConnections[userID]
             if userID in readyToPlay:
                 readyToPlay.remove(userID)
+            if userID in lastCoord:
+                del lastCoord[userID]
             for m in matches:
                 if m[0] == userID or m[1] == userID:
-                    enemyID = ""
+                    enemyID = 0
                     if m[0] == userID:
                         enemyID = m[1]
                     else:
