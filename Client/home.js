@@ -276,6 +276,8 @@ function sendPhoto() {
 	  
 	msg["actionType"] = 3;
 	msg["picture"] = getPictureString();
+	msg["ballX"] = topPositionOfBall;
+	msg["ballY"] = leftPositionOfBall;
 	  		  
 	   
 	conn.onmessage = function(e){ 
