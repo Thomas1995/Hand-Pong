@@ -247,14 +247,25 @@ function sendPhoto() {
 	var stringPicture = '';
 		
 	for(var i=0; i<data.length; i+=4) {
+		var pixel = 0;
 		for(var t = 0; t < 3; t++){
-			if(data[i+t].toString().length < 3){
-				for(var j = data[i+t].toString().length; j < 3; j++){
-					stringPicture = stringPicture.concat("0");
-				}
+			
+			if(t == 0){
+				pixel = pixel + Math.floor(data[i+t] * 0.3);
 			}
-			stringPicture = stringPicture.concat(data[i+t].toString());
+			if(t == 1){
+				pixel = pixel + Math.floor(data[i+t] * 0.59);
+			}
+			if(t == 2){
+				pixel = pixel + Math.floor(data[i+t] * 0.11);
+			}
 		}
+		if(pixel.toString().length < 3){
+			for(var j = pixel.toString().length; j < 3; j++){
+				stringPicture = stringPicture.concat("0");
+			}
+		}
+		stringPicture = stringPicture.concat(pixel.toString());
 	}
 	/*
 	var t = 0;
@@ -287,7 +298,7 @@ function sendPhoto() {
 		window.clearInterval(id2);
 		
 		if(obj.ballX != null){
-			//startBall(0);
+			startBall(0);
 		}
 		
 		
