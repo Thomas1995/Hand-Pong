@@ -300,11 +300,21 @@ function sendPhoto() {
 			//startBall(0);
 		}
 		
-		if(obj.status == "ENEMY_DISCONNECTED"){
+		if(obj.status == "ENEMY_DISCONNECTED" || obj.status == "FINISH_GAME"){
 			
-			var target = $("#divGame");
-			removeElement(target);
-			setTimeout(function(){ location.reload(); }, 1000);
+			if(obj.status == "ENEMY_DISCONNECTED") {
+				var target = $("#divGame");
+				removeElement(target);
+				setTimeout(function(){ location.reload(); }, 1000);
+			}
+			if(obj.status == "FINISH_GAME") {
+				showResult();
+				$("#finalResult-title").text(obj.finalResult);
+				setTimeout(function(){ 
+					hideResult(); 
+					setTimeout(function(){ location.reload(); }, 500);
+				}, 3000);
+			}
 		}
 		else {
 					
@@ -351,8 +361,10 @@ function sendPhoto() {
 		  
 			msg["actionType"] = 3;
 			msg["picture"] = getPictureString();
-			msg["ballY"] = topPositionOfBall;
-			msg["ballX"] = leftPositionOfBall;
+			//msg["ballY"] = topPositionOfBall;
+			//msg["ballX"] = leftPositionOfBall;
+			msg["scorePlayer1"] = score1;
+			msg["scorePlayer2"] = score2;
 			conn.send(JSON.stringify(msg));
 	  	} 	
 	};
@@ -439,6 +451,25 @@ function showPleaseWait() {
 
 function hidePleaseWait() {
 	$("#pleaseWaitDialog").remove();
+}
+
+function showResult() {
+	var modalLoading = 
+		'<div class="modal" id="finalResult">\
+			<div class="finalResult-dialog">\
+				<div class="finalResult-content">\
+					<div class="finalResult-header">\
+						<h1 id="finalResult-title" class="finalResult-title"/>\
+					</div>\
+					</div>\
+				</div>\
+			</div>\
+		</div>';
+	$(document.body).append(modalLoading);
+}
+
+function hideResult() {
+	$("#finalResult").remove();
 }
 
 function removeElement(target) {

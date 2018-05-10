@@ -504,3 +504,23 @@ html {
 	background-color:white;
 	border-radius:50%;
 }
+
+.finalResult-dialog { 
+	position: absolute; 
+	left: 0; 
+	right: 0; 
+	top: 0; 
+	bottom: 0; 
+	margin: auto; 
+	width: 350px; 
+	height: 200px; 
+	background-color:white;
+	border-radius: 12px;
+	border: 2px solid white;
+}
+
+.finalResult-title{
+	color: rgb(134,111,97);
+	text-align:center;
+	padding-top:30px;
+}
