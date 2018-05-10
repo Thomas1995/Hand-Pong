@@ -1,5 +1,5 @@
 html {
-	background: url(1.jpg) no-repeat center center fixed; 
+	background: url(1.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -251,21 +251,21 @@ html {
 }
 
 .divNext{
-	float: left; 
+	float: left;
 	width: 35px;
 	height:30px;
 	margin-top:130px;
 }
 
 .divPrevious{
-	float: left; 
+	float: left;
 	width: 35px;
 	height:30px;
 	margin-top:130px;
 }
 
 .divInstructionsText{
-	float: left; 
+	float: left;
 	width: 330px;
 	font-size: 18px;
 	font-family: "Comic Sans MS", cursive, sans-serif;
@@ -370,15 +370,15 @@ html {
 	border: 2px solid white;
 }
 
-.modal-dialog { 
-	position: absolute; 
-	left: 0; 
-	right: 0; 
-	top: 0; 
-	bottom: 0; 
-	margin: auto; 
-	width: 350px; 
-	height: 230px; 
+.modal-dialog {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	width: 350px;
+	height: 230px;
 	background-color:white;
 	border-radius: 12px;
 	border: 2px solid white;
@@ -409,7 +409,7 @@ html {
 }
 
 .playersStatistics{
-	float: left; 
+	float: left;
 	width: 390px;
 	height:90px;
 	margin-top:15px;
@@ -458,7 +458,7 @@ html {
 .divInformationHeader{
 	width:100%;
 	overflow: auto
-	
+
 }
 
 .paddle1{
@@ -505,7 +505,27 @@ html {
 	border-radius:50%;
 }
 
-video {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
+.finalResult-dialog {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	width: 350px;
+	height: 200px;
+	background-color:white;
+	border-radius: 12px;
+	border: 2px solid white;
+}
+
+.finalResult-title{
+	color: rgb(134,111,97);
+	text-align:center;
+	padding-top:30px;
+}
+
+video{
+	-web-transform: scaleX(-1);
+	transform: scaleX(-1);
 }

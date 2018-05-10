@@ -14,6 +14,8 @@ activeConnections = {}
 lastCoord = {}
 frameNo = {}
 ballCoord = {}
+gameOver = {}
+gameVerdict = {}
 readyToPlay = []
 matches = []
 dbConn = None
@@ -24,6 +26,7 @@ STATUS_ALREADY_LOGGED_IN = 'ALREADY_LOGGED_IN'
 STATUS_INVALID_CREDENTIALS = 'INVALID_CREDENTIALS'
 STATUS_NO_USER_ID = 'NO_USER_ID'
 STATUS_ENEMY_DISCONNECTED = 'ENEMY_DISCONNECTED'
+STATUS_FINISH_GAME = 'FINISH_GAME'
 
 def getUserID(username, password):
     cursor = dbConn.cursor()
@@ -84,6 +87,22 @@ def getUserData(userID):
         ret['loss'] = result[0][3]
     return ret
 
+def changeScoreDB(winnerID, loserID):
+    cursor = dbConn.cursor()
+
+    sql_command = 'UPDATE users SET win = win + 1 WHERE userID = ?'
+    cursor.execute(sql_command, (str(winnerID),))
+    cursor.fetchall()
+
+    sql_command = 'UPDATE users SET loss = loss + 1 WHERE userID = ?'
+    cursor.execute(sql_command, (str(loserID),))
+    cursor.fetchall()
+
+    try:
+        sql_command = 'COMMIT'
+        cursor.execute(sql_command)
+    except:
+        pass
 
 async def listen(websocket, path):
     userID = 0
@@ -151,6 +170,10 @@ async def listen(websocket, path):
                         lastCoord[enemyID] = 0.5
                         frameNo[userID] = 0
                         frameNo[enemyID] = 0
+                        gameOver[userID] = False
+                        gameOver[enemyID] = False
+                        gameVerdict[userID] = False
+                        gameVerdict[enemyID] = False
 
                         await websocket.send(json.dumps(resp))
                         await activeConnections[enemyID].send(json.dumps(resp))
@@ -160,16 +183,8 @@ async def listen(websocket, path):
                     resp['status'] = STATUS_NO_USER_ID
                     await websocket.send(json.dumps(resp))
                 else:
-                    cnt = 0
-                    for i in range(0, 200):
-                        for j in range(0, 200):
-                            picture[i][j] = int(msg['picture'][cnt:(cnt+3)])
-                            cnt = cnt + 3
-
-                    coord = model.inference_frame(picture)
-                    if coord != -1:
-                        lastCoord[userID] = coord
-                        print('AM DETECTAT MANA LUI ' + str(userID) + ' la ' + str(coord))
+                    if int(msg['scorePlayer1']) >= 9 or int(msg['scorePlayer2']) >= 9:
+                        gameOver[userID] = True
 
                     enemyID = 0
                     playerNo = -1
@@ -182,6 +197,46 @@ async def listen(websocket, path):
                                 enemyID = m[0]
                                 playerNo = 1
 
+                    if gameOver[userID] and gameOver[enemyID]:
+                        if gameVerdict[userID]:
+                            continue
+
+                        gameVerdict[userID] = True
+                        gameVerdict[enemyID] = True
+
+                        winner = 0
+                        if int(msg['scorePlayer1']) >= 9:
+                            winner = 0
+                        else:
+                            winner = 1
+                        finMsg = {'status': STATUS_FINISH_GAME}
+
+                        if playerNo == winner:
+                            finMsg['finalResult'] = 'You win!'
+                            await websocket.send(json.dumps(finMsg))
+                            finMsg['finalResult'] = 'You lost!'
+                            await activeConnections[enemyID].send(json.dumps(finMsg))
+                            changeScoreDB(userID, enemyID)
+                        else:
+                            finMsg['finalResult'] = 'You lost!'
+                            await websocket.send(json.dumps(finMsg))
+                            finMsg['finalResult'] = 'You win!'
+                            await activeConnections[enemyID].send(json.dumps(finMsg))
+                            changeScoreDB(enemyID, userID)
+
+                        continue
+
+                    cnt = 0
+                    for i in range(0, 200):
+                        for j in range(0, 200):
+                            picture[i][j] = int(msg['picture'][cnt:(cnt+3)])
+                            cnt = cnt + 3
+
+                    coord = model.inference_frame(picture)
+                    if coord != -1:
+                        lastCoord[userID] = coord
+                        print('AM DETECTAT MANA LUI ' + str(userID) + ' la ' + str(coord))
+
                     frameNo[userID] = frameNo[userID] + 1
                     #ballCoord[userID] = (msg['ballX'], msg['ballY'])
 
@@ -190,12 +245,12 @@ async def listen(websocket, path):
                         #ballDif = abs(ballCoord[userID][0] - ballCoord[enemyID][0]) + abs(ballCoord[userID][1] - ballCoord[enemyID][1])
 
                         if playerNo == 0:
-                            coords = {'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]}
+                            coords = {'status': STATUS_OK, 'player1coord': lastCoord[userID], 'player2coord': lastCoord[enemyID]}
                             #if ballDif > 200:
                             #    coords['ballX'] = ballCoord[userID][0]
                             #    coords['ballY'] = ballCoord[userID][1]
                         else:
-                            coords = {'player2coord': lastCoord[userID], 'player1coord': lastCoord[enemyID]}
+                            coords = {'status': STATUS_OK, 'player2coord': lastCoord[userID], 'player1coord': lastCoord[enemyID]}
                             #if ballDif > 200:
                             #    coords['ballX'] = ballCoord[enemyID][0]
                             #    coords['ballY'] = ballCoord[enemyID][1]
@@ -212,8 +267,12 @@ async def listen(websocket, path):
                 del lastCoord[userID]
             if userID in frameNo:
                 del frameNo[userID]
-            if userID in ballCoord:
-                del ballCoord[userID]
+            #if userID in ballCoord:
+            #    del ballCoord[userID]
+            if userID in gameOver:
+                del gameOver[userID]
+            if userID in gameVerdict:
+                del gameVerdict[userID]
 
             for m in matches:
                 if m[0] == userID or m[1] == userID:

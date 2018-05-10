@@ -18,7 +18,7 @@ async def test(uri):
         ws2 = await websockets.connect(uri)
 
         # test login
-        msg = {'actionType': 1, 'username': 'test', 'password': 'parola'}
+        msg = {'actionType': 1, 'username': 'test', 'password': '8287458823facb8ff918dbfabcd22ccb'}
         await ws.send(json.dumps(msg))
         resp = await ws.recv()
         resp = json.loads(resp)
@@ -53,7 +53,7 @@ async def test(uri):
             raise Exception('Request without user ID')
 
         # test invalid credentials
-        msg = {'actionType': 1, 'username': 'test', 'password': 'parol'}
+        msg = {'actionType': 1, 'username': 'test', 'password': 'parola'}
         await ws2.send(json.dumps(msg))
         resp = await ws2.recv()
         resp = json.loads(resp)
@@ -63,7 +63,7 @@ async def test(uri):
             raise Exception('Invalid credentials')
 
         # test match-making
-        msg = {'actionType': 1, 'username': 'test2', 'password': 'parola'}
+        msg = {'actionType': 1, 'username': 'test2', 'password': '8287458823facb8ff918dbfabcd22ccb'}
         await ws2.send(json.dumps(msg))
         await ws2.recv()
 
