@@ -37,8 +37,7 @@ $(document).ready(function() {
 	  
 		msg["actionType"] = 1;
 		msg["username"] = username;
-		msg["password"] = criptPassword(password);
-
+		msg["password"] = encryptPassword(password);
 	  
 		conn = new WebSocket(urlConnection);
 		conn.onmessage = function(e){ 
@@ -70,7 +69,7 @@ $(document).ready(function() {
 	  
 		msg["actionType"] = 0;
 		msg["username"] = username;
-		msg["password"] = criptPassword(password);
+		msg["password"] = encryptPassword(password);
 		msg["email"] = email;
 	 
 		if(isEmail(email)) {
@@ -239,7 +238,7 @@ function isEmail(email) {
   return regex.test(email);
 }
 
-function criptPassword(string) {
+function encryptPassword(string) {
 
     function RotateLeft(lValue, iShiftBits) {
         return (lValue<<iShiftBits) | (lValue>>>(32-iShiftBits));
