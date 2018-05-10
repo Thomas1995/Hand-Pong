@@ -72,26 +72,30 @@ $(document).ready(function() {
 		msg["username"] = username;
 		msg["password"] = password;
 		msg["email"] = email;
-	  	 
 	 
-		conn = new WebSocket(urlConnection);
-		conn.onmessage = function(e){ 
-			var obj = JSON.parse(e.data);
-			if(obj.status == 'OK'){
-				var divLogin = $("#divLogin");
-				removeElement(divLogin);
-				$("#usernameLobby").text(obj.username);
-				$("#emailLobby").text(obj.email);
-				$("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
-				setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
-			}
-			else{
-				alert('Sign up fail');
-			}		
-		};
-		conn.onopen = () => conn.send(JSON.stringify(msg));			
+		if(isEmail(email)) {
+	 
+			conn = new WebSocket(urlConnection);
+			conn.onmessage = function(e){ 
+				var obj = JSON.parse(e.data);
+				if(obj.status == 'OK'){
+					var divLogin = $("#divLogin");
+					removeElement(divLogin);
+					$("#usernameLobby").text(obj.username);
+					$("#emailLobby").text(obj.email);
+					$("#statisticsLobby").text("Wins/Losses: " + obj.win + "/" + obj.loss);
+					setTimeout(function(){ $('.divLobby').slideToggle("slow"); }, 1000);
+				}
+				else{
+					alert('Sign up fail');
+				}		
+			};
+			conn.onopen = () => conn.send(JSON.stringify(msg));			
 
-	  
+	    }
+		else {
+			alert("Email invalid!");
+		}
 	  
 	});
   
@@ -229,6 +233,11 @@ $(document).ready(function() {
 	});
     
 });
+
+function isEmail(email) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}
 
 function sendPhoto() {
 		
