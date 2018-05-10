@@ -504,3 +504,8 @@ html {
 	background-color:white;
 	border-radius:50%;
 }
+
+video {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
