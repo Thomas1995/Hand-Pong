@@ -7,10 +7,20 @@
 Classic game of [Pong](https://en.wikipedia.org/wiki/Pong "Pong Wikipedia page") but played using hand detection 
 on your webcam (move hand up or down to move the pallet)
 
-##### Usage
+##### Usage (Linux)
 
-1. Install
-2. Play
+1. `conda create -n hand_pong python=3.5`
+2. `source activate hand_pong`
+3. `git clone https://github.com/Thomas1995/Hand-Pong`
+4. `cd Hand-Pong`
+5. `pip install requirements`
+6. `python Server/server.py localhost`
+7. open Client/home.html in your browser
+
+##### Requirements
+
+* Python >= 3.5.0
+* Web Cam
 
 ##### References
 * Big thanks to [victordibia](https://github.com/victordibia "GitHub profile") for his project about [hand tracking](https://github.com/victordibia/handtracking)
